@@ -1,11 +1,15 @@
 import { IoSunnySharp } from 'react-icons/io5';
+import Container from './Container';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <div className="bg-secondary">
-      <div className="text-white max-w-screen-xl mx-auto p-2">
+    <div className="bg-secondary shadow-sm shadow-gray-500">
+      <Container className={`p-2`}>
         <div className="flex items-center justify-between">
-          <img src="./logo.png" alt="logo" className="h-10" />
+          <Link to={`/`}>
+            <img src="./logo.png" alt="logo" className="h-10" />
+          </Link>
           <ul className="flex items-center space-x-2">
             <li>
               <button className="bg-dark-subtle p-1 rounded">
@@ -19,10 +23,12 @@ const Navbar = () => {
                 placeholder="Search..."
               />
             </li>
-            <li className="text-white font-semibold text-lg">LOGIN</li>
+            <li className="text-white font-semibold text-lg">
+              <Link to={'/auth/signin'}>LOGIN</Link>
+            </li>
           </ul>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };
