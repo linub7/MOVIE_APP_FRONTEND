@@ -5,13 +5,13 @@ const Footer = ({ leftText, leftPath, rightText, rightPath }) => {
   return (
     <div className="flex justify-between items-center">
       <p
-        className="text-dark-subtle cursor-pointer hover:text-white transition"
+        className="dark:text-dark-subtle text-light-subtle cursor-pointer dark:hover:text-white  hover:text-primary transition"
         onClick={() => navigate(leftPath)}
       >
         {leftText}
       </p>
       <p
-        className="text-dark-subtle cursor-pointer hover:text-white transition"
+        className="dark:text-dark-subtle text-light-subtle cursor-pointer dark:hover:text-white hover:text-primary transition"
         onClick={() => navigate(rightPath)}
       >
         {rightText}

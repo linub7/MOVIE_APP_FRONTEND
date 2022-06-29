@@ -1,9 +1,11 @@
 import Footer from 'components/form/Footer';
+import FormContainer from 'components/form/FormContainer';
 import FormInput from 'components/form/FormInput';
 import FormTitle from 'components/form/FormTitle';
 import Submit from 'components/form/Submit';
 import Container from 'components/shared/Container';
 import { useState } from 'react';
+import { commonModalClass } from 'utils/theme';
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -30,12 +32,9 @@ const SignupComponent = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-primary -z-10 flex items-center justify-center">
+    <FormContainer>
       <Container>
-        <form
-          className="bg-secondary rounded p-6 w-72 space-y-6"
-          onSubmit={handleSubmit}
-        >
+        <form className={`${commonModalClass} w-72`} onSubmit={handleSubmit}>
           <FormTitle title={`Sign Up`} />
           <FormInput
             handleChangeValue={handleChangeValue}
@@ -75,7 +74,7 @@ const SignupComponent = () => {
           />
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 

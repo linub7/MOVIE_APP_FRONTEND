@@ -1,8 +1,11 @@
 import { IoSunnySharp } from 'react-icons/io5';
 import Container from './Container';
 import { Link } from 'react-router-dom';
+import { useTheme } from 'hooks';
 
 const Navbar = () => {
+  const { toggleTheme } = useTheme();
+
   return (
     <div className="bg-secondary shadow-sm shadow-gray-500">
       <Container className={`p-2`}>
@@ -12,7 +15,10 @@ const Navbar = () => {
           </Link>
           <ul className="flex items-center space-x-2">
             <li>
-              <button className="bg-dark-subtle p-1 rounded">
+              <button
+                className="dark:bg-white bg-dark-subtle p-1 rounded"
+                onClick={toggleTheme}
+              >
                 <IoSunnySharp className="text-secondary" size={24} />
               </button>
             </li>

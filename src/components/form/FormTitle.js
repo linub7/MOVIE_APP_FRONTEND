@@ -1,6 +1,6 @@
 const FormTitle = ({ title }) => {
   return (
-    <h1 className="text-xl text-white font-semibold text-center mb-5">
+    <h1 className="text-xl dark:text-white text-secondary font-semibold text-center mb-5">
       {title}
     </h1>
   );

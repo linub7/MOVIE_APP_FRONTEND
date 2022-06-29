@@ -7,64 +7,59 @@ import Container from 'components/shared/Container';
 import { useState } from 'react';
 import { commonModalClass } from 'utils/theme';
 
-const SigninComponent = () => {
+const ConfirmPasswordComponent = () => {
   const [values, setValues] = useState({
-    email: '',
     password: '',
+    confirmPassword: '',
   });
 
-  const { email, password } = values;
+  const { password, confirmPassword } = values;
 
   const handleChangeValue = (e) => {
     const {
       target: { name, value },
     } = e;
-    setValues({
-      ...values,
+
+    setValues((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ values });
+    console.log({ password });
   };
   return (
     <FormContainer>
       <Container>
         <form className={`${commonModalClass} w-72`} onSubmit={handleSubmit}>
-          <FormTitle title={`Sign in`} />
-          <FormInput
-            handleChangeValue={handleChangeValue}
-            id="email"
-            value={email}
-            label="Email"
-            name={`email`}
-            placeholder={`Your Email`}
-            type={`text`}
-          />
-
+          <FormTitle title={`New Password`} />
           <FormInput
             handleChangeValue={handleChangeValue}
             id="password"
             value={password}
-            label="Password"
+            label="New Password"
             name={`password`}
-            placeholder={`Your Password`}
+            placeholder={`Password`}
+            type={`text`}
+          />
+          <FormInput
+            handleChangeValue={handleChangeValue}
+            id="confirmPassword"
+            value={confirmPassword}
+            label="Confirm Password"
+            name={`confirmPassword`}
+            placeholder={`Confirm Password`}
             type={`text`}
           />
 
-          <Submit value={`Sign In`} />
-          <Footer
-            leftText={`Forgot Password?`}
-            leftPath="/auth/forgot-password"
-            rightText={`Sign Up`}
-            rightPath="/auth/signup"
-          />
+          <Submit value={`Submit`} />
+          <Footer leftText={`Back to Sign In`} leftPath="/auth/signin" />
         </form>
       </Container>
     </FormContainer>
   );
 };
 
-export default SigninComponent;
+export default ConfirmPasswordComponent;

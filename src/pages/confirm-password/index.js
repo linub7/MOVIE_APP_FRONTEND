@@ -1,5 +1,11 @@
+import ConfirmPasswordComponent from 'components/auth/ConfirmPasswordComponent';
+
 const ConfirmPassword = () => {
-  return <div>ConfirmPassword</div>;
+  return (
+    <>
+      <ConfirmPasswordComponent />
+    </>
+  );
 };
 
 export default ConfirmPassword;
