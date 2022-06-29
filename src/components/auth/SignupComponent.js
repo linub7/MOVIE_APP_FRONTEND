@@ -1,10 +1,14 @@
+import { signupUser } from 'api/auth';
+import axios from 'axios';
 import Footer from 'components/form/Footer';
 import FormContainer from 'components/form/FormContainer';
 import FormInput from 'components/form/FormInput';
 import FormTitle from 'components/form/FormTitle';
 import Submit from 'components/form/Submit';
 import Container from 'components/shared/Container';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signupValidation } from 'utils/signupValidation';
 import { commonModalClass } from 'utils/theme';
 
 const SignupComponent = () => {
@@ -13,8 +17,19 @@ const SignupComponent = () => {
     email: '',
     password: '',
   });
-
   const { name, email, password } = values;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      setValues({
+        name: '',
+        email: '',
+        password: '',
+      });
+    };
+  }, []);
 
   const handleChangeValue = (e) => {
     const {
@@ -26,9 +41,20 @@ const SignupComponent = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ values });
+    const { ok, error: validateError } = signupValidation(values);
+    if (!ok) return console.log(validateError);
+
+    if (ok) {
+      const { err, data } = await signupUser(values);
+      if (err?.error.toString() === 'Duplicate fields value entered') {
+        alert('Email already exists');
+        return;
+      }
+      console.log(data);
+      navigate('/auth/verification', { state: { user: data }, replace: true });
+    }
   };
 
   return (

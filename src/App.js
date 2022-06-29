@@ -6,6 +6,7 @@ import Signup from 'pages/Signup';
 import { Routes, Route } from 'react-router-dom';
 import Verification from 'pages/verification';
 import ConfirmPassword from 'pages/confirm-password';
+import NotFound from 'pages/not-found';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/auth/confirm-password" element={<ConfirmPassword />} />
         <Route path="/auth/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
