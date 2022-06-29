@@ -8,7 +8,7 @@ const Navbar = () => {
       <Container className={`p-2`}>
         <div className="flex items-center justify-between">
           <Link to={`/`}>
-            <img src="./logo.png" alt="logo" className="h-10" />
+            <img src="/lgo.png" alt="logo" className="h-10" />
           </Link>
           <ul className="flex items-center space-x-2">
             <li>

@@ -1,5 +1,11 @@
+import VerificationComponent from 'components/auth/VerificationComponent';
+
 const Verification = () => {
-  return <div>Verification</div>;
+  return (
+    <>
+      <VerificationComponent />
+    </>
+  );
 };
 
 export default Verification;
