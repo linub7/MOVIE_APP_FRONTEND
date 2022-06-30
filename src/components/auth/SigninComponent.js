@@ -4,7 +4,7 @@ import FormInput from 'components/form/FormInput';
 import FormTitle from 'components/form/FormTitle';
 import Submit from 'components/form/Submit';
 import Container from 'components/shared/Container';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { signinValidation } from 'utils/signinValidation';
 import { commonModalClass } from 'utils/theme';
 import toast from 'react-hot-toast';
@@ -22,7 +22,7 @@ const SigninComponent = () => {
   });
   const { email, password } = values;
 
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
