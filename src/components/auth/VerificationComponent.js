@@ -7,18 +7,18 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { otpValidation } from 'utils/otpValidation';
 import { commonModalClass } from 'utils/theme';
+import toast from 'react-hot-toast';
 
 const OTP_LENGTH = 6;
 
 const VerificationComponent = () => {
+  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [activeOTPIndex, setActiveOTPIndex] = useState(0);
 
   const { state } = useLocation();
 
   const user = state?.user;
-
-  console.log(user);
 
   const navigate = useNavigate();
 
@@ -30,6 +30,11 @@ const VerificationComponent = () => {
 
   useEffect(() => {
     if (!user) navigate('/not-found');
+
+    return () => {
+      setOtp(new Array(OTP_LENGTH).fill(''));
+      setActiveOTPIndex(0);
+    };
   }, [user]);
 
   const focusNextInputField = (index) => setActiveOTPIndex(index + 1);
@@ -61,16 +66,22 @@ const VerificationComponent = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!otpValidation(otp)) {
-      return console.log('Invalid otp');
+      setLoading(false);
+      return toast.error('Invalid OTP Verification');
     } else {
       const OTP = otp.join('');
       console.log(OTP);
 
       const { err, data } = await verifyUser({ OTP, userId: user._id });
-      console.log(err?.error);
-      console.log(data);
+      err?.error && toast.error(err?.error);
+      data && toast.success('OTP verified successfully! Please login');
+      setLoading(false);
+      setTimeout(() => {
+        data && navigate('/auth/signin');
+      }, 2000);
     }
   };
 
@@ -98,7 +109,7 @@ const VerificationComponent = () => {
             ))}
           </div>
 
-          <Submit value={`Submit`} />
+          <Submit value={`Submit`} loading={loading} />
         </form>
       </Container>
     </FormContainer>

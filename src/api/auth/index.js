@@ -13,6 +13,19 @@ export const signupUser = async (values) => {
   }
 };
 
+export const signinUser = async (values) => {
+  try {
+    const { data } = await client.post(
+      `${process.env.REACT_APP_BACKEND_URL}/signin`,
+      values
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const verifyUser = async (values) => {
   try {
     const { data } = await client.post(

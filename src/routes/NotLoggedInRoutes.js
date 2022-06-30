@@ -1,7 +1,7 @@
-// import { useSelector } from 'react-redux';
-// import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from 'hooks';
+import { Navigate, Outlet } from 'react-router-dom';
 
-// export default function NotLoggedInRoutes() {
-//   const { user } = useSelector((user) => ({ ...user }));
-//   return user ? <Navigate to={'/'} /> : <Outlet />;
-// }
+export default function NotLoggedInRoutes() {
+  const { auth } = useAuth();
+  return auth?.token ? <Navigate to={'/'} /> : <Outlet />;
+}

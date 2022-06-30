@@ -7,17 +7,38 @@ import { Routes, Route } from 'react-router-dom';
 import Verification from 'pages/verification';
 import ConfirmPassword from 'pages/confirm-password';
 import NotFound from 'pages/not-found';
+import { Toaster } from 'react-hot-toast';
+import NotLoggedInRoutes from 'routes/NotLoggedInRoutes';
+import LoggedInRoutes from 'routes/LoggedInRoutes';
+import Protected from 'pages/protected';
 
 function App() {
   return (
     <>
       <Navbar />
+      <Toaster />
       <Routes>
-        <Route path="/auth/signin" element={<Signin />} />
-        <Route path="/auth/signup" element={<Signup />} />
-        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-        <Route path="/auth/confirm-password" element={<ConfirmPassword />} />
-        <Route path="/auth/verification" element={<Verification />} />
+        <Route element={<NotLoggedInRoutes />}>
+          <Route path="/auth/signin" element={<Signin />} />
+          <Route path="/auth/signup" element={<Signup />} />
+          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+          <Route path="/auth/confirm-password" element={<ConfirmPassword />} />
+          <Route path="/auth/verification" element={<Verification />} />
+        </Route>
+        <Route element={<LoggedInRoutes />}>
+          <Route path="/protected" element={<Protected />} />
+          {/* <Route
+            path="/friends"
+            element={
+              <Friends
+                visible={visible}
+                setVisible={setVisible}
+                tmpPost={tmpPost}
+                setTmpPost={setTmpPost}
+              />
+            }
+          /> */}
+        </Route>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

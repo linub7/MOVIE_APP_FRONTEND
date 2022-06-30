@@ -1,8 +1,8 @@
-// import Login from 'pages/login';
-// import { useSelector } from 'react-redux';
-// import { Outlet } from 'react-router-dom';
+import { useAuth } from 'hooks';
+import Signin from 'pages/Signin';
+import { Outlet } from 'react-router-dom';
 
-// export default function LoggedInRoutes() {
-//   const { user } = useSelector((user) => ({ ...user }));
-//   return user ? <Outlet /> : <Login />;
-// }
+export default function LoggedInRoutes() {
+  const { auth } = useAuth();
+  return auth?.token ? <Outlet /> : <Signin />;
+}

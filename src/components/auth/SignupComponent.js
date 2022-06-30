@@ -1,5 +1,4 @@
 import { signupUser } from 'api/auth';
-import axios from 'axios';
 import Footer from 'components/form/Footer';
 import FormContainer from 'components/form/FormContainer';
 import FormInput from 'components/form/FormInput';
@@ -10,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupValidation } from 'utils/signupValidation';
 import { commonModalClass } from 'utils/theme';
+import toast from 'react-hot-toast';
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -17,6 +17,8 @@ const SignupComponent = () => {
     email: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [validationError, setValidationError] = useState('');
   const { name, email, password } = values;
 
   const navigate = useNavigate();
@@ -43,17 +45,32 @@ const SignupComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { ok, error: validateError } = signupValidation(values);
-    if (!ok) return console.log(validateError);
+    if (!ok) {
+      setLoading(false);
+      setValidationError(validateError);
+      setTimeout(() => {
+        setValidationError('');
+      }, 2000);
+      return toast.error(validateError);
+    }
 
     if (ok) {
       const { err, data } = await signupUser(values);
       if (err?.error.toString() === 'Duplicate fields value entered') {
-        alert('Email already exists');
+        toast.error('Email already exists');
+        setLoading(false);
         return;
       }
-      console.log(data);
-      navigate('/auth/verification', { state: { user: data }, replace: true });
+      toast.success('Successfully signed up, please verify your email');
+      setLoading(false);
+      setTimeout(() => {
+        navigate('/auth/verification', {
+          state: { user: data },
+          replace: true,
+        });
+      }, 2000);
     }
   };
 
@@ -89,10 +106,14 @@ const SignupComponent = () => {
             label="Password"
             name={`password`}
             placeholder={`Your Password`}
-            type={`text`}
+            type={`password`}
           />
 
-          <Submit value={`Register`} />
+          <Submit
+            value={`Register`}
+            loading={loading}
+            validationError={validationError}
+          />
           <Footer
             leftText={`Already have an account?`}
             leftPath="/auth/signin"

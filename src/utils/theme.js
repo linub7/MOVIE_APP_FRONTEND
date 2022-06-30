@@ -1,2 +1,2 @@
 export const commonModalClass =
-  'dark:bg-secondary bg-white drop-shadow-lg rounded p-6 space-y-6';
+  'dark:bg-secondary bg-white drop-shadow-lg rounded p-6 space-y-6 mt-32';

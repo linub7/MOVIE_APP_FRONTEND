@@ -1,10 +1,21 @@
 import { IoSunnySharp } from 'react-icons/io5';
 import Container from './Container';
 import { Link } from 'react-router-dom';
-import { useTheme } from 'hooks';
+import { useAuth, useTheme } from 'hooks';
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const { toggleTheme } = useTheme();
+  const { auth, setAuth } = useAuth();
+
+  const handleLogout = () => {
+    Cookies.remove('auth');
+    setAuth({
+      user: null,
+      token: '',
+    });
+    window.location.reload();
+  };
 
   return (
     <div className="bg-secondary shadow-sm shadow-gray-500">
@@ -29,9 +40,16 @@ const Navbar = () => {
                 placeholder="Search..."
               />
             </li>
-            <li className="text-white font-semibold text-lg">
-              <Link to={'/auth/signin'}>LOGIN</Link>
-            </li>
+            {auth?.token ? (
+              <li className="text-white font-semibold text-lg hover:text-yellow-400">
+                {/* <Link to={'/auth/signin'}>LOGIN</Link> */}
+                <button onClick={handleLogout}>Logout</button>
+              </li>
+            ) : (
+              <li className="text-white font-semibold text-lg hover:text-yellow-400">
+                <Link to={'/auth/signin'}>Login</Link>
+              </li>
+            )}
           </ul>
         </div>
       </Container>
