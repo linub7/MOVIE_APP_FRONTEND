@@ -8,6 +8,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { otpValidation } from 'utils/otpValidation';
 import { commonModalClass } from 'utils/theme';
 import toast from 'react-hot-toast';
+import { useAuth } from 'hooks';
+import Cookies from 'js-cookie';
 
 const OTP_LENGTH = 6;
 
@@ -15,6 +17,8 @@ const VerificationComponent = () => {
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
   const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+
+  const { auth, setAuth } = useAuth();
 
   const { state } = useLocation();
 
@@ -77,11 +81,21 @@ const VerificationComponent = () => {
 
       const { err, data } = await verifyUser({ OTP, userId: user._id });
       err?.error && toast.error(err?.error);
-      data && toast.success('OTP verified successfully! Please login');
+      data && toast.success('Your Email is verified successfully');
       setLoading(false);
-      setTimeout(() => {
-        data && navigate('/auth/signin');
-      }, 2000);
+      if (data) {
+        const { success, token, ...rest } = data;
+
+        setAuth({
+          user: { ...rest },
+          token,
+        });
+        // save in cookies
+        Cookies.set('auth', JSON.stringify(data));
+        setTimeout(() => {
+          data && navigate('/');
+        }, 2000);
+      }
     }
   };
 

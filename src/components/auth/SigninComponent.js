@@ -24,12 +24,6 @@ const SigninComponent = () => {
 
   const { auth, setAuth } = useAuth();
 
-  // useEffect(() => {
-  //   if (auth?.token) {
-  //     navigate('/');
-  //   }
-  // }, []);
-
   const navigate = useNavigate();
 
   const handleChangeValue = (e) => {
