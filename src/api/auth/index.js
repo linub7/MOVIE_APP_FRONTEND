@@ -77,3 +77,16 @@ export const resetPassword = async ({ token, id, password }) => {
     return { err: response?.data };
   }
 };
+
+export const resendVerificationToken = async (userId) => {
+  try {
+    const { data } = await client.post(
+      `${process.env.REACT_APP_BACKEND_URL}/resend-verify-email`,
+      { userId }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

@@ -24,7 +24,6 @@ function App() {
           <Route path="/auth/signup" element={<Signup />} />
           <Route path="/auth/forgot-password" element={<ForgotPassword />} />
           <Route path="/auth/reset-password" element={<ResetPassword />} />
-          <Route path="/auth/verification" element={<Verification />} />
         </Route>
         <Route element={<LoggedInRoutes />}>
           <Route path="/protected" element={<Protected />} />
@@ -40,6 +39,7 @@ function App() {
             }
           /> */}
         </Route>
+        <Route path="/auth/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

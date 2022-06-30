@@ -1,4 +1,4 @@
-import { verifyUser } from 'api/auth';
+import { resendVerificationToken, verifyUser } from 'api/auth';
 import FormContainer from 'components/form/FormContainer';
 import FormTitle from 'components/form/FormTitle';
 import Submit from 'components/form/Submit';
@@ -34,6 +34,8 @@ const VerificationComponent = () => {
 
   useEffect(() => {
     if (!user) navigate('/not-found');
+    if (!auth?.token) navigate('/');
+    // if (auth?.user?.isVerified) navigate('/');
 
     return () => {
       setOtp(new Array(OTP_LENGTH).fill(''));
@@ -69,6 +71,17 @@ const VerificationComponent = () => {
     });
   };
 
+  const handleResentVerificationToken = async () => {
+    const userId = auth ? auth?.user?._id : user._id;
+    const { err, data } = await resendVerificationToken(userId);
+
+    if (err?.error) {
+      toast.error(err?.error);
+      return;
+    }
+    toast.success('Successfully resent verification token');
+  };
+
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -85,19 +98,24 @@ const VerificationComponent = () => {
       setLoading(false);
       if (data) {
         const { success, token, ...rest } = data;
+        console.log(rest);
 
         setAuth({
           user: { ...rest },
           token,
         });
         // save in cookies
-        Cookies.set('auth', JSON.stringify(data));
+        Cookies.set('auth', JSON.stringify({ token, user: { ...rest } }));
         setTimeout(() => {
           data && navigate('/');
         }, 2000);
       }
     }
   };
+
+  if (auth?.user?.isVerified) {
+    navigate('/');
+  }
 
   return (
     <FormContainer>
@@ -124,6 +142,13 @@ const VerificationComponent = () => {
           </div>
 
           <Submit value={`Submit`} loading={loading} />
+          <button
+            type="button"
+            className="dark:text-white text-blue-500 font-semibold hover:underline mt-2"
+            onClick={handleResentVerificationToken}
+          >
+            I don't have an OTP
+          </button>
         </form>
       </Container>
     </FormContainer>

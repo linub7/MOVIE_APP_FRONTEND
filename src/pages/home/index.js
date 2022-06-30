@@ -1,12 +1,16 @@
+import NotVerified from 'components/home/NotVerified';
 import Container from 'components/shared/Container';
+import { useAuth } from 'hooks';
 
 const Home = () => {
+  const { auth } = useAuth();
+
   return (
-    <div className="fixed inset-0 dark:bg-secondary bg-white -z-10  flex items-center justify-center">
-      <Container>
-        <h1>Home</h1>
-      </Container>
-    </div>
+    <Container>
+      {auth?.token !== '' && !auth?.user?.isVerified && (
+        <NotVerified auth={auth} />
+      )}
+    </Container>
   );
 };
 

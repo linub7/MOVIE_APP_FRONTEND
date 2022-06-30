@@ -80,7 +80,7 @@ const SigninComponent = () => {
         token,
       });
       // save in cookies
-      Cookies.set('auth', JSON.stringify(data));
+      Cookies.set('auth', JSON.stringify({ token, user: { ...rest } }));
 
       setLoading(false);
       setTimeout(() => {
