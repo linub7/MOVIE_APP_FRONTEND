@@ -84,7 +84,7 @@ const SigninComponent = () => {
 
       setLoading(false);
       setTimeout(() => {
-        navigate('/');
+        data?.role === 'admin' ? navigate('/admin/dashboard') : navigate('/');
       }, 2000);
     }
   };

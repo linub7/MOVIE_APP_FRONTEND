@@ -90,3 +90,20 @@ export const resendVerificationToken = async (userId) => {
     return { err: response?.data };
   }
 };
+
+export const getMe = async (token) => {
+  try {
+    const { data } = await client.get(
+      `${process.env.REACT_APP_BACKEND_URL}/me`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    debugger;
+
+    console.log(data);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

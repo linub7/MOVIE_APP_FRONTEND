@@ -3,7 +3,13 @@ import Home from 'pages/home';
 import Signin from 'pages/Signin';
 import Navbar from 'components/shared/Navbar';
 import Signup from 'pages/Signup';
-import { Routes, Route } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import Verification from 'pages/verification';
 
 import NotFound from 'pages/not-found';
@@ -12,11 +18,17 @@ import NotLoggedInRoutes from 'routes/NotLoggedInRoutes';
 import LoggedInRoutes from 'routes/LoggedInRoutes';
 import Protected from 'pages/protected';
 import ResetPassword from 'pages/reset-password';
+import OnlyAdminRoutes from 'routes/OnlyAdminRoutes';
+import AdminDashboard from 'pages/admin/dashboard';
+import AdminMovies from 'pages/admin/movies';
+import AdminActors from 'pages/admin/actors';
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
-      <Navbar />
+      {!location.pathname.includes('/admin') && <Navbar />}
       <Toaster />
       <Routes>
         <Route element={<NotLoggedInRoutes />}>
@@ -27,17 +39,11 @@ function App() {
         </Route>
         <Route element={<LoggedInRoutes />}>
           <Route path="/protected" element={<Protected />} />
-          {/* <Route
-            path="/friends"
-            element={
-              <Friends
-                visible={visible}
-                setVisible={setVisible}
-                tmpPost={tmpPost}
-                setTmpPost={setTmpPost}
-              />
-            }
-          /> */}
+        </Route>
+        <Route element={<OnlyAdminRoutes />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/movies" element={<AdminMovies />} />
+          <Route path="/admin/actors" element={<AdminActors />} />
         </Route>
         <Route path="/auth/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
