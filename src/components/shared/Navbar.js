@@ -1,8 +1,8 @@
-import { IoSunnySharp } from 'react-icons/io5';
 import Container from './Container';
 import { Link } from 'react-router-dom';
 import { useAuth, useTheme } from 'hooks';
 import Cookies from 'js-cookie';
+import ToggleThemeButton from './ToggleThemeButton';
 
 const Navbar = () => {
   const { toggleTheme } = useTheme();
@@ -26,12 +26,7 @@ const Navbar = () => {
           </Link>
           <ul className="flex items-center space-x-2">
             <li>
-              <button
-                className="dark:bg-white bg-dark-subtle p-1 rounded"
-                onClick={toggleTheme}
-              >
-                <IoSunnySharp className="text-secondary" size={24} />
-              </button>
+              <ToggleThemeButton toggleTheme={toggleTheme} />
             </li>
             <li>
               <input

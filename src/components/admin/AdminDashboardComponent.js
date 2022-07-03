@@ -33,10 +33,10 @@ const AdminDashboardComponent = () => {
           <li>
             <NavItem
               isActive={location.pathname === '/admin/dashboard' ? true : false}
-              path={'/'}
+              path={'/admin/dashboard'}
             >
               <IoHomeOutline />
-              <span>Home</span>
+              <span>Dashboard</span>
             </NavItem>
           </li>
           <li>
