@@ -3,13 +3,7 @@ import Home from 'pages/home';
 import Signin from 'pages/Signin';
 import Navbar from 'components/shared/Navbar';
 import Signup from 'pages/Signup';
-import {
-  Routes,
-  Route,
-  useParams,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Verification from 'pages/verification';
 
 import NotFound from 'pages/not-found';
@@ -22,8 +16,12 @@ import OnlyAdminRoutes from 'routes/OnlyAdminRoutes';
 import AdminDashboard from 'pages/admin/dashboard';
 import AdminMovies from 'pages/admin/movies';
 import AdminActors from 'pages/admin/actors';
+import { useState } from 'react';
 
 function App() {
+  const [toggleModal, setToggleModal] = useState(false);
+  const [showAddMovieModal, setShowAddMovieModal] = useState(false);
+  const [showAddActorModal, setShowAddActorModal] = useState(false);
   const location = useLocation();
 
   return (
@@ -41,9 +39,45 @@ function App() {
           <Route path="/protected" element={<Protected />} />
         </Route>
         <Route element={<OnlyAdminRoutes />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/movies" element={<AdminMovies />} />
-          <Route path="/admin/actors" element={<AdminActors />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminDashboard
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
+                showAddMovieModal={showAddMovieModal}
+                setShowAddMovieModal={setShowAddMovieModal}
+                showAddActorModal={showAddActorModal}
+                setShowAddActorModal={setShowAddActorModal}
+              />
+            }
+          />
+          <Route
+            path="/admin/movies"
+            element={
+              <AdminMovies
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
+                showAddMovieModal={showAddMovieModal}
+                setShowAddMovieModal={setShowAddMovieModal}
+                showAddActorModal={showAddActorModal}
+                setShowAddActorModal={setShowAddActorModal}
+              />
+            }
+          />
+          <Route
+            path="/admin/actors"
+            element={
+              <AdminActors
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
+                showAddMovieModal={showAddMovieModal}
+                setShowAddMovieModal={setShowAddMovieModal}
+                showAddActorModal={showAddActorModal}
+                setShowAddActorModal={setShowAddActorModal}
+              />
+            }
+          />
         </Route>
         <Route path="/auth/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
