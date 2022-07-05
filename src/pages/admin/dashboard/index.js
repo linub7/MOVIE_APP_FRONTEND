@@ -2,7 +2,7 @@ import { uploadTrailer } from 'api/movie';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import { useAuth } from 'hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const AdminDashboard = ({
@@ -13,6 +13,7 @@ const AdminDashboard = ({
   showAddMovieModal,
 }) => {
   const [videoSelected, setVideoSelected] = useState(false);
+  const [videoInfo, setVideoInfo] = useState({});
   const progressBarRef = useRef(null);
   const { auth } = useAuth();
 
@@ -30,6 +31,10 @@ const AdminDashboard = ({
     } else {
       toast.success('Uploaded successfully');
       console.log(data);
+      setVideoInfo({
+        url: data?.url,
+        public_id: data?.public_id,
+      });
       setVideoSelected(true);
       progressBarRef.current.complete();
     }
@@ -52,6 +57,7 @@ const AdminDashboard = ({
           videoSelected={videoSelected}
           progressBarRef={progressBarRef}
           setVideoSelected={setVideoSelected}
+          videoInfo={videoInfo}
         />
       )}
       <h1>Admin Dashboard</h1>

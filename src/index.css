@@ -4,6 +4,32 @@
   margin: 0;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #222222;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(224, 201, 251);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(143, 190, 245);
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #aeaeafa1;
+  border-radius: 5px;
+}
+
 .bounce-custom {
   animation: bounce-custom 0.5s infinite;
 }
