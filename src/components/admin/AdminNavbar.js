@@ -1,9 +1,12 @@
 import ToggleThemeButton from 'components/shared/ToggleThemeButton';
 import { useTheme } from 'hooks';
 import { IoAddSharp } from 'react-icons/io5';
+import { useLocation } from 'react-router-dom';
 
 const AdminNavbar = ({ toggleModal, setToggleModal }) => {
   const { toggleTheme } = useTheme();
+
+  const { pathname } = useLocation();
 
   return (
     <div className="flex items-center justify-between relative">
@@ -14,14 +17,16 @@ const AdminNavbar = ({ toggleModal, setToggleModal }) => {
       />
 
       <div className="flex items-center space-x-3">
+        {pathname === '/admin/dashboard' && (
+          <button
+            onClick={() => setToggleModal(!toggleModal)}
+            className="flex items-center space-x-2 dark:border-dark-subtle border-secondary hover:border-primary dark:text-white text-secondary hover:text-cyan-400 dark:hover:text-yellow-400 transition font-semibold border-2 rounded text-lg px-3 py-1"
+          >
+            <span>Create</span>
+            <IoAddSharp />
+          </button>
+        )}
         <ToggleThemeButton toggleTheme={toggleTheme} />
-        <button
-          onClick={() => setToggleModal(!toggleModal)}
-          className="flex items-center space-x-2 dark:border-dark-subtle border-secondary hover:border-primary dark:text-white text-secondary hover:text-cyan-400 dark:hover:text-yellow-400 transition font-semibold border-2 rounded text-lg px-3 py-1"
-        >
-          <span>Create</span>
-          <IoAddSharp />
-        </button>
       </div>
     </div>
   );

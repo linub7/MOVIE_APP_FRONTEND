@@ -11,6 +11,12 @@ import InputLabelWithBadge from './inputs/InputLabelWithBadge';
 import CastForm from './cast/CastForm';
 import PosterSelector from './poster/PosterSelector';
 import GenresSelector from './genres/GenresSelector';
+import Selector from './select/Selector';
+import {
+  languageOptions,
+  statusOptions,
+  typeOptions,
+} from 'utils/selectorOptions';
 
 const MovieForm = ({
   videoInfo,
@@ -95,6 +101,20 @@ const MovieForm = ({
     setPoster(file);
   };
 
+  const handleOptionSelect = ({ target }) => {
+    const { name, value } = target;
+    if (name === 'type') {
+      setType(value);
+    }
+    if (name === 'language') {
+      setLanguage(value);
+    }
+
+    if (name === 'status') {
+      setStatus(value);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!castValidation) return toast.error('Please add at least one cast');
@@ -108,13 +128,16 @@ const MovieForm = ({
         casts,
         releaseDate,
         genres,
+        type,
+        language,
+        status,
       });
     }
   };
 
   return (
     <div className="flex space-x-3 p-2">
-      <div className="w-[70%] h-5 space-y-5">
+      <div className="w-[70%] space-y-5">
         <div>
           <InputLabel htmlFor={'title'}>Title</InputLabel>
           <input
@@ -224,6 +247,25 @@ const MovieForm = ({
         <GenresSelector
           badge={genres.length}
           setShowSelectGenresModal={setShowSelectGenresModal}
+        />
+
+        <Selector
+          label={'Type'}
+          name="type"
+          options={typeOptions}
+          handleOptionSelect={handleOptionSelect}
+        />
+        <Selector
+          label={'Language'}
+          name="language"
+          options={languageOptions}
+          handleOptionSelect={handleOptionSelect}
+        />
+        <Selector
+          label={'Status'}
+          name="status"
+          options={statusOptions}
+          handleOptionSelect={handleOptionSelect}
         />
       </div>
     </div>
