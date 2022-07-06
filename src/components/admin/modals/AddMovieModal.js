@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import MovieForm from '../form/MovieForm';
 import TrailerSelector from '../shared/TrailerSelector';
+import CastsModal from './CastsModal';
 import CommonModal from './CommonModal';
 import WritersModal from './WritersModal';
 
@@ -14,7 +15,9 @@ const AddMovieModal = ({
   videoInfo,
 }) => {
   const [viewWritersPage, setViewWritersPage] = useState(false);
+  const [viewCastsPage, setViewCastsPage] = useState(false);
   const [writers, setWriters] = useState([]);
+  const [casts, setCasts] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -22,19 +25,25 @@ const AddMovieModal = ({
     };
   }, []);
 
-  console.log(writers);
-
   const handleRemoveWriter = (id) => {
     setWriters(writers.filter((writer) => writer.id !== id));
   };
+
+  const handleRemoveCast = (id) => {
+    // setWriters(writers.filter((writer) => writer.id !== id));
+    setCasts(casts.filter((cast) => cast.profile?.id !== id));
+  };
+
   return (
     <CommonModal
       // setWritersList={setWritersList}
       setWriters={setWriters}
+      viewCastsPage={viewCastsPage}
       setShowAddMovieModal={setShowAddMovieModal}
       setVideoSelected={setVideoSelected}
       viewWritersPage={viewWritersPage}
       setViewWritersPage={setViewWritersPage}
+      setViewCastsPage={setViewCastsPage}
     >
       <>
         {/* {!videoSelected && (
@@ -45,23 +54,34 @@ const AddMovieModal = ({
         />
       )} */}
 
-        {!viewWritersPage ? (
+        {viewWritersPage ? (
+          <div className="space-y-2">
+            <WritersModal
+              setWriters={setWriters}
+              writers={writers}
+              handleRemoveWriter={handleRemoveWriter}
+              setViewWritersPage={setViewWritersPage}
+            />
+          </div>
+        ) : viewCastsPage ? (
+          <div className="space-y-2">
+            <CastsModal
+              casts={casts}
+              handleRemoveCast={handleRemoveCast}
+              setViewCastsPage={setViewCastsPage}
+            />
+          </div>
+        ) : (
           <MovieForm
             setViewWritersPage={setViewWritersPage}
             videoInfo={videoInfo}
             // setWritersList={setWritersList}
             writers={writers}
             setWriters={setWriters}
+            setViewCastsPage={setViewCastsPage}
+            casts={casts}
+            setCasts={setCasts}
           />
-        ) : (
-          <div className="space-y-2">
-            <WritersModal
-              // setWritersList={setWritersList}
-              setWriters={setWriters}
-              writers={writers}
-              handleRemoveWriter={handleRemoveWriter}
-            />
-          </div>
         )}
       </>
     </CommonModal>

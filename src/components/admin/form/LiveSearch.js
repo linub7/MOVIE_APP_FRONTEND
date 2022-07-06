@@ -20,7 +20,11 @@ const LiveSearch = ({ setProfile, profile, results, name }) => {
   };
 
   const handleSelection = (result) => {
-    setProfile(result);
+    if (result) {
+      setProfile(result);
+      setVisibleSearch(false);
+      setFocusedIndex(-1);
+    }
   };
 
   const handleOnKeyDown = ({ key }) => {
@@ -35,6 +39,11 @@ const LiveSearch = ({ setProfile, profile, results, name }) => {
     }
     if (key === 'ArrowUp') {
       nextCount = (focusedIndex - 1 + results.length) % results.length;
+    }
+
+    if (key === 'Escape') {
+      setVisibleSearch(false);
+      setFocusedIndex(-1);
     }
 
     if (key === 'Enter') {
