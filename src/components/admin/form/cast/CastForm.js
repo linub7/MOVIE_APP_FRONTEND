@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { commonInputClasses } from 'utils/theme';
-import LiveSearch from './LiveSearch';
+import LiveSearch from '../search/LiveSearch';
 
 const CastForm = ({
   cast,

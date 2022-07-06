@@ -1,14 +1,15 @@
 import Submit from 'components/form/Submit';
 import { useState } from 'react';
 import { commonInputClasses } from 'utils/theme';
-import InputLabel from './InputLabel';
-import LiveSearch from './LiveSearch';
-import TagsInput from './TagsInput';
+import InputLabel from './inputs/InputLabel';
+import LiveSearch from './search/LiveSearch';
+import TagsInput from './tag/TagsInput';
 import { results } from 'data/fakeData';
 import toast from 'react-hot-toast';
-import LiveWritersSearch from './LiveWritersSearch';
-import InputLabelWithBadge from './InputLabelWithBadge';
-import CastForm from './CastForm';
+import LiveWritersSearch from './search/LiveWritersSearch';
+import InputLabelWithBadge from './inputs/InputLabelWithBadge';
+import CastForm from './cast/CastForm';
+import PosterSelector from './poster/PosterSelector';
 
 const MovieForm = ({
   videoInfo,
@@ -32,6 +33,7 @@ const MovieForm = ({
   const [director, setDirector] = useState([]);
   const [releaseDate, setReleaseDate] = useState('');
   const [poster, setPoster] = useState(null);
+  const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
   const [genres, setGenres] = useState([]);
   const [type, setType] = useState('');
   const [language, setLanguage] = useState('');
@@ -74,11 +76,33 @@ const MovieForm = ({
     setCasts([...casts, cast]);
   };
 
+  const updatePosterForUI = (poster) => {
+    const url = URL.createObjectURL(poster);
+    setSelectedPosterForUI(url);
+  };
+
+  const handleAddPoster = (e) => {
+    if (!e.target.files[0].type.startsWith('image'))
+      return toast.error('Invalid file type');
+
+    const file = e.target.files[0];
+    updatePosterForUI(file);
+    setPoster(file);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!castValidation) return toast.error('Please add at least one cast');
     if (castValidation) {
-      console.log({ title, storyLine, tags, director, writers, casts });
+      console.log({
+        title,
+        storyLine,
+        tags,
+        director,
+        writers,
+        casts,
+        releaseDate,
+      });
     }
   };
 
@@ -175,20 +199,22 @@ const MovieForm = ({
             casts={casts}
           />
         </div>
-        {/* <div>
-          <InputLabel htmlFor={'Profile'} />
-          <LiveSearch
-            profile={profile}
-            setProfile={setProfile}
-            results={results}
-            name="profile"
-          />
-        </div> */}
 
+        <input
+          type="date"
+          className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
+          onChange={(e) => setReleaseDate(e.target.value)}
+        />
         <Submit value={'Submit'} onSubmit={handleSubmit} type="button" />
       </div>
 
-      <div className="w-[30%] h-5 bg-blue-400"></div>
+      <div className="w-[30%] mt-9">
+        <PosterSelector
+          name="poster"
+          handleAddPoster={handleAddPoster}
+          selectedPosterForUI={selectedPosterForUI}
+        />
+      </div>
     </div>
   );
 };
