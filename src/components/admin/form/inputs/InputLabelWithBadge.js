@@ -2,12 +2,6 @@ import InputLabel from './InputLabel';
 
 const InputLabelWithBadge = ({ children, htmlFor, badge = 0 }) => {
   return (
-    // <label
-    //   htmlFor={htmlFor}
-    //   className="dark:text-dark-subtle text-light-subtle font-semibold"
-    // >
-    //   {children}
-    // </label>
     <div className="relative">
       <InputLabel htmlFor={htmlFor}>{children}</InputLabel>
       {badge !== 0 && (

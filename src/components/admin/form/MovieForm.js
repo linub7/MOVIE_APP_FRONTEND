@@ -10,6 +10,7 @@ import LiveWritersSearch from './search/LiveWritersSearch';
 import InputLabelWithBadge from './inputs/InputLabelWithBadge';
 import CastForm from './cast/CastForm';
 import PosterSelector from './poster/PosterSelector';
+import GenresSelector from './genres/GenresSelector';
 
 const MovieForm = ({
   videoInfo,
@@ -19,6 +20,10 @@ const MovieForm = ({
   setViewCastsPage,
   casts,
   setCasts,
+  showSelectGenresModal,
+  setShowSelectGenresModal,
+  genres,
+  setGenres,
 }) => {
   const [title, setTitle] = useState('');
   const [storyLine, setStoryLine] = useState('');
@@ -34,7 +39,7 @@ const MovieForm = ({
   const [releaseDate, setReleaseDate] = useState('');
   const [poster, setPoster] = useState(null);
   const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
-  const [genres, setGenres] = useState([]);
+
   const [type, setType] = useState('');
   const [language, setLanguage] = useState('');
   const [status, setStatus] = useState('');
@@ -102,13 +107,14 @@ const MovieForm = ({
         writers,
         casts,
         releaseDate,
+        genres,
       });
     }
   };
 
   return (
     <div className="flex space-x-3 p-2">
-      <div className="w-[70%] h-5 space-y-4">
+      <div className="w-[70%] h-5 space-y-5">
         <div>
           <InputLabel htmlFor={'title'}>Title</InputLabel>
           <input
@@ -208,11 +214,16 @@ const MovieForm = ({
         <Submit value={'Submit'} onSubmit={handleSubmit} type="button" />
       </div>
 
-      <div className="w-[30%] mt-9">
+      <div className="w-[30%] mt-9 space-y-5">
         <PosterSelector
           name="poster"
           handleAddPoster={handleAddPoster}
           selectedPosterForUI={selectedPosterForUI}
+        />
+
+        <GenresSelector
+          badge={genres.length}
+          setShowSelectGenresModal={setShowSelectGenresModal}
         />
       </div>
     </div>
