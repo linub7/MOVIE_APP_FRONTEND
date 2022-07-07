@@ -1,5 +1,6 @@
 import { uploadTrailer } from 'api/movie';
 import AdminLayout from 'components/admin/layout/AdminLayout';
+import AddActorModal from 'components/admin/modals/AddActorModal';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import { useAuth } from 'hooks';
 import { useRef, useState } from 'react';
@@ -11,6 +12,7 @@ const AdminDashboard = ({
   setShowAddActorModal,
   setShowAddMovieModal,
   showAddMovieModal,
+  showAddActorModal,
 }) => {
   const [videoSelected, setVideoSelected] = useState(false);
   const [videoInfo, setVideoInfo] = useState({});
@@ -59,6 +61,9 @@ const AdminDashboard = ({
           setVideoSelected={setVideoSelected}
           videoInfo={videoInfo}
         />
+      )}
+      {showAddActorModal && (
+        <AddActorModal setShowAddActorModal={setShowAddActorModal} />
       )}
       <h1>Admin Dashboard</h1>
     </AdminLayout>

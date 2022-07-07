@@ -239,6 +239,7 @@ const MovieForm = ({
 
       <div className="w-[30%] mt-9 space-y-5">
         <PosterSelector
+          label={'Select Poster'}
           name="poster"
           handleAddPoster={handleAddPoster}
           selectedPosterForUI={selectedPosterForUI}

@@ -12,9 +12,7 @@ const TagsInput = ({
   const tagsRef = useRef();
 
   useEffect(() => {
-    inputRef.current.scrollIntoView({
-      behavior: 'smooth',
-    });
+    inputRef.current?.scrollIntoView(false);
   }, [tag]);
 
   const handleOnBlur = () => {
