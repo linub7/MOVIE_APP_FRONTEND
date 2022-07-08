@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { commonInputClasses } from 'utils/theme';
 import SearchResult from './SearchResult';
 
-const LiveWritersSearch = ({ setProfile, profile, results, name }) => {
+const LiveWritersSearch = ({
+  value,
+  onChange,
+  onSelect = null,
+  results,
+  name,
+  visible,
+}) => {
   const [visibleSearch, setVisibleSearch] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
@@ -21,7 +28,7 @@ const LiveWritersSearch = ({ setProfile, profile, results, name }) => {
 
   const handleSelection = (result) => {
     if (result) {
-      setProfile(result);
+      onSelect(result);
       setVisibleSearch(false);
       setFocusedIndex(-1);
     }
@@ -53,12 +60,16 @@ const LiveWritersSearch = ({ setProfile, profile, results, name }) => {
     setFocusedIndex(nextCount);
   };
 
+  // useEffect(() => {
+  //   if (visible) return setVisibleSearch(visible);
+  //   setVisibleSearch(false);
+  // }, [visible]);
+
   return (
     <div className="relative">
       <input
-        readOnly
-        value={profile.name}
-        onChange={setProfile}
+        value={value}
+        onChange={onChange}
         className={`${commonInputClasses} border-2 rounded p-1 text-lg`}
         placeholder={`Search ${name}`}
         onFocus={handleOnFocus}
@@ -67,14 +78,14 @@ const LiveWritersSearch = ({ setProfile, profile, results, name }) => {
       />
       {visibleSearch && (
         <div className="absolute right-0 left-0 top-10 dark:bg-secondary bg-white shadow-md p-2 max-h-72 space-y-2 mt-1 overflow-auto scrollbar transition z-10">
-          {results?.map(({ id, name, avatar }, index) => (
+          {results?.map(({ _id, name, avatar }, index) => (
             <SearchResult
               focusedIndex={focusedIndex}
               index={index}
-              key={id}
-              id={id}
+              key={_id}
+              id={_id}
               name={name}
-              avatar={avatar}
+              avatar={avatar?.url}
               onSelect={handleSelection}
             />
           ))}

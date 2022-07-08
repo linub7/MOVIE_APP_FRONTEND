@@ -10,6 +10,8 @@ const AdminLayout = ({
   setToggleModal,
   setShowAddMovieModal,
   setShowAddActorModal,
+  setShowAddWriterModal,
+  setShowAddDirectorModal,
 }) => {
   const createModalRef = useRef(null);
 
@@ -22,6 +24,10 @@ const AdminLayout = ({
 
   const handleClickAddActor = () => setShowAddActorModal(true);
 
+  const handleClickAddWriter = () => setShowAddWriterModal(true);
+
+  const handleClickAddDirector = () => setShowAddDirectorModal(true);
+
   return (
     <div className="flex dark:bg-primary bg-white dark:text-white text-light-subtle">
       <AdminDashboardComponent />
@@ -30,6 +36,8 @@ const AdminLayout = ({
           createModalRef={createModalRef}
           handleClickAddActor={handleClickAddActor}
           handleClickAddMovie={handleClickAddMovie}
+          handleClickAddWriter={handleClickAddWriter}
+          handleClickAddDirector={handleClickAddDirector}
         />
       )}
       <div className="flex-1 p-2 max-w-screen-xl">

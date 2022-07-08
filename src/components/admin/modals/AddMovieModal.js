@@ -16,6 +16,7 @@ const AddMovieModal = ({
   setVideoSelected,
   videoInfo,
 }) => {
+  const [forceModalRender, setForceModalRender] = useState(false);
   const [showSelectGenresModal, setShowSelectGenresModal] = useState(false);
   const [viewWritersPage, setViewWritersPage] = useState(false);
   const [viewCastsPage, setViewCastsPage] = useState(false);
@@ -23,13 +24,15 @@ const AddMovieModal = ({
   const [genres, setGenres] = useState([]);
   const [casts, setCasts] = useState([]);
 
-  console.log(genres);
-
   useEffect(() => {
     return () => {
       setVideoSelected(false);
     };
   }, []);
+
+  useEffect(() => {
+    console.log('modal re-render');
+  }, [forceModalRender]);
 
   const handleRemoveWriter = (id) => {
     setWriters(writers.filter((writer) => writer.id !== id));
@@ -89,6 +92,7 @@ const AddMovieModal = ({
         ) : (
           <MovieForm
             setViewWritersPage={setViewWritersPage}
+            setForceModalRender={setForceModalRender}
             videoInfo={videoInfo}
             // setWritersList={setWritersList}
             writers={writers}

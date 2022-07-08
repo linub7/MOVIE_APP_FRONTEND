@@ -1,10 +1,13 @@
 import { uploadTrailer } from 'api/movie';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddActorModal from 'components/admin/modals/AddActorModal';
+import AddDirectorModal from 'components/admin/modals/AddDirectorModal';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
+import AddWriterModal from 'components/admin/modals/AddWriterModal';
 import { useAuth } from 'hooks';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { debounce } from 'utils/debounce';
 
 const AdminDashboard = ({
   toggleModal,
@@ -13,6 +16,10 @@ const AdminDashboard = ({
   setShowAddMovieModal,
   showAddMovieModal,
   showAddActorModal,
+  setShowAddDirectorModal,
+  setShowAddWriterModal,
+  showAddWriterModal,
+  showAddDirectorModal,
 }) => {
   const [videoSelected, setVideoSelected] = useState(false);
   const [videoInfo, setVideoInfo] = useState({});
@@ -50,6 +57,8 @@ const AdminDashboard = ({
       setToggleModal={setToggleModal}
       setShowAddMovieModal={setShowAddMovieModal}
       setShowAddActorModal={setShowAddActorModal}
+      setShowAddDirectorModal={setShowAddDirectorModal}
+      setShowAddWriterModal={setShowAddWriterModal}
     >
       {showAddMovieModal && (
         <AddMovieModal
@@ -65,6 +74,14 @@ const AdminDashboard = ({
       {showAddActorModal && (
         <AddActorModal setShowAddActorModal={setShowAddActorModal} />
       )}
+
+      {showAddWriterModal && (
+        <AddWriterModal setShowAddWriterModal={setShowAddWriterModal} />
+      )}
+      {showAddDirectorModal && (
+        <AddDirectorModal setShowAddDirectorModal={setShowAddDirectorModal} />
+      )}
+
       <h1>Admin Dashboard</h1>
     </AdminLayout>
   );

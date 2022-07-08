@@ -3,26 +3,29 @@ import { commonInputClasses } from 'utils/theme';
 import LiveSearch from '../search/LiveSearch';
 
 const CastForm = ({
+  visible,
+  onChange,
   cast,
   setCast,
   results,
   setCastValidation,
   handleSubmitCast,
   casts,
+  setForceModalRender,
 }) => {
-  const { profile, leadActor, roleAs } = cast;
   const handleProfile = (profile) => {
     setCast({ ...cast, profile });
   };
 
-  console.log({ profile, leadActor, roleAs });
-
   const handleAddButton = () => {
-    if (!profile.name) return toast.error('Please select a profile');
-    if (!roleAs.trim()) return toast.error('Please enter a role');
+    if (!cast?.profile?.name) return toast.error('Please select a profile');
+    if (!cast?.roleAs?.trim()) return toast.error('Please enter a role');
 
-    if (casts.find((cast) => cast.profile.id === profile.id)) {
-      return toast.error('Profile already added');
+    setForceModalRender((prev) => !prev);
+
+    for (const cs of casts) {
+      if (cs.profile?.id === cast.profile?.id)
+        return toast.error('Cast already added');
     }
 
     setCast({
@@ -35,6 +38,7 @@ const CastForm = ({
       roleAs: '',
       leadActor: false,
     });
+
     setCastValidation(true);
     handleSubmitCast(cast);
   };
@@ -42,17 +46,22 @@ const CastForm = ({
   return (
     <div className="flex items-center space-x-2">
       <input
+        value={cast?.profile?.name}
         type="checkbox"
         name="leadActor"
         className="w-4 h-4"
-        checked={leadActor}
+        checked={cast?.leadActor}
         onChange={(e) => setCast({ ...cast, leadActor: e.target.checked })}
         title="Set as Lead Actor"
       />
       <LiveSearch
+        visible={visible}
+        onChange={onChange}
+        setValue={handleProfile}
+        value={cast?.profile?.name}
         name={'Actor'}
-        profile={profile}
-        setProfile={handleProfile}
+        profile={cast?.profile}
+        onSelect={handleProfile}
         results={results}
       />
       <span className="dark:text-dark-subtle text-light-subtle font-semibold">
@@ -63,7 +72,7 @@ const CastForm = ({
           type="text"
           className={`${commonInputClasses} border-2 rounded p-1 text-lg`}
           placeholder="Role as"
-          value={roleAs}
+          value={cast?.roleAs}
           onChange={(e) => setCast({ ...cast, roleAs: e.target.value })}
         />
       </div>

@@ -22,6 +22,8 @@ function App() {
   const [toggleModal, setToggleModal] = useState(false);
   const [showAddMovieModal, setShowAddMovieModal] = useState(false);
   const [showAddActorModal, setShowAddActorModal] = useState(false);
+  const [showAddDirectorModal, setShowAddDirectorModal] = useState(false);
+  const [showAddWriterModal, setShowAddWriterModal] = useState(false);
   const location = useLocation();
 
   return (
@@ -49,6 +51,10 @@ function App() {
                 setShowAddMovieModal={setShowAddMovieModal}
                 showAddActorModal={showAddActorModal}
                 setShowAddActorModal={setShowAddActorModal}
+                showAddDirectorModal={showAddDirectorModal}
+                setShowAddDirectorModal={setShowAddDirectorModal}
+                showAddWriterModal={showAddWriterModal}
+                setShowAddWriterModal={setShowAddWriterModal}
               />
             }
           />

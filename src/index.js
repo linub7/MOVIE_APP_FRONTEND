@@ -6,16 +6,25 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ThemeProvider from 'context/ThemeProvider';
 import AuthProvider from 'context/AuthProvider';
+import SearchDirectorProvider from 'context/SearchDirectorProvider';
+import SearchCastProvider from 'context/SearchCastProvider';
+import SearchWritersProvider from 'context/SearchWritersProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-      <ThemeProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ThemeProvider>
+      <SearchDirectorProvider>
+        <SearchCastProvider>
+          <SearchWritersProvider>
+            <ThemeProvider>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </ThemeProvider>
+          </SearchWritersProvider>
+        </SearchCastProvider>
+      </SearchDirectorProvider>
     </Router>
   </React.StrictMode>
 );

@@ -4,7 +4,7 @@ import { commonInputClasses } from 'utils/theme';
 import InputLabel from './inputs/InputLabel';
 import LiveSearch from './search/LiveSearch';
 import TagsInput from './tag/TagsInput';
-import { results } from 'data/fakeData';
+// import { results } from 'data/fakeData';
 import toast from 'react-hot-toast';
 import LiveWritersSearch from './search/LiveWritersSearch';
 import InputLabelWithBadge from './inputs/InputLabelWithBadge';
@@ -17,6 +17,10 @@ import {
   statusOptions,
   typeOptions,
 } from 'utils/selectorOptions';
+import { searchActor } from 'api/actor';
+import { useSearchCast, useSearchDirector, useSearchWriters } from 'hooks';
+import { searchDirector } from 'api/director';
+import { searchWriter } from 'api/writer';
 
 const MovieForm = ({
   videoInfo,
@@ -30,27 +34,47 @@ const MovieForm = ({
   setShowSelectGenresModal,
   genres,
   setGenres,
+  setForceModalRender,
 }) => {
   const [title, setTitle] = useState('');
   const [storyLine, setStoryLine] = useState('');
-  // const [profile, setProfile] = useState({});
   const [cast, setCast] = useState({
     profile: {},
     roleAs: '',
     leadActor: false,
   });
-
   const [castValidation, setCastValidation] = useState(false);
-  const [director, setDirector] = useState([]);
+  const [director, setDirector] = useState({});
   const [releaseDate, setReleaseDate] = useState('');
   const [poster, setPoster] = useState(null);
   const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
-
   const [type, setType] = useState('');
   const [language, setLanguage] = useState('');
   const [status, setStatus] = useState('');
   const [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
+
+  const {
+    handleDirectorSearch,
+    searchingDirector,
+    searchDirectorResultsNotFound,
+    searchDirectorResults,
+    resetDirectorSearch,
+  } = useSearchDirector();
+
+  const {
+    handleWritersSearch,
+    // searchingWriters,
+    // searchWritersResultsNotFound,
+    searchWritersResults,
+  } = useSearchWriters();
+
+  const {
+    handleCastSearch,
+    // searchingCast,
+    // searchCastResultsNotFound,
+    searchCastResults,
+  } = useSearchCast();
 
   const handleTagChange = (e) => {
     if (e.target.value !== ',') setTag(e.target.value);
@@ -71,20 +95,28 @@ const MovieForm = ({
     }
   };
 
-  const handleAddWriters = (profile) => {
+  const handleAddWriters = (input) => {
     for (const writer of writers) {
-      if (writer.id === profile.id) return toast.error('Writer already added');
+      if (writer.id === input.id) return toast.error('Writer already added');
     }
-    setWriters([...writers, profile]);
+    setWriters([...writers, input]);
   };
+
+  console.log(director);
 
   const handleRemoveTag = (tagName) => {
     const newTags = tags.filter((tag) => tag !== tagName);
     setTags([...newTags]);
   };
 
-  const handleSubmitCast = (cast) => {
-    setCasts([...casts, cast]);
+  const handleSubmitCast = (input) => {
+    setCasts([...casts, input]);
+    setForceModalRender((prev) => !prev);
+    setCast({
+      profile: {},
+      roleAs: '',
+      leadActor: false,
+    });
   };
 
   const updatePosterForUI = (poster) => {
@@ -115,24 +147,44 @@ const MovieForm = ({
     }
   };
 
+  const handleChangeDirector = (e) => {
+    setDirector({ ...director, name: e.target.value });
+    handleDirectorSearch(searchDirector, e.target.value);
+  };
+
+  const handleChangeWriters = (e) => {
+    // setWriters([...writers, { name: e.target.value }]);
+    handleWritersSearch(searchWriter, e.target.value);
+  };
+
+  const handleChangeCast = (e) => {
+    setCast({ ...cast, name: e.target.value });
+    handleCastSearch(searchActor, e.target.value);
+  };
+
+  const handleDirector = (result) => setDirector(result);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!castValidation) return toast.error('Please add at least one cast');
-    if (castValidation) {
-      console.log({
-        title,
-        storyLine,
-        tags,
-        director,
-        writers,
-        casts,
-        releaseDate,
-        genres,
-        type,
-        language,
-        status,
-      });
-    }
+
+    if (!casts.length) return toast.error('Please add at least one cast');
+
+    console.log({
+      title,
+      storyLine,
+      tags,
+      director,
+      writers,
+      casts,
+      releaseDate,
+      genres,
+      type,
+      language,
+      status,
+      poster,
+    });
+
+    resetDirectorSearch();
   };
 
   return (
@@ -176,9 +228,13 @@ const MovieForm = ({
         <div>
           <InputLabel htmlFor={'director'}>Director</InputLabel>
           <LiveSearch
+            visible={searchDirectorResults.length}
+            value={director?.name}
+            onChange={handleChangeDirector}
+            setValue={setDirector}
             profile={director}
-            setProfile={(e) => setDirector(e)}
-            results={results}
+            onSelect={handleDirector}
+            results={searchDirectorResults}
             name="director"
           />
         </div>
@@ -198,10 +254,12 @@ const MovieForm = ({
             )}
           </div>
           <LiveWritersSearch
-            profile={writers}
-            setProfile={(e) => handleAddWriters(e)}
-            results={results}
+            value={writers?.name}
+            onChange={handleChangeWriters}
+            onSelect={(e) => handleAddWriters(e)}
+            results={searchWritersResults}
             name="writers"
+            visible={searchWritersResults.length}
           />
         </div>
         <div>
@@ -212,7 +270,10 @@ const MovieForm = ({
             {casts.length > 0 && (
               <button
                 type="button"
-                onClick={() => setViewCastsPage(true)}
+                onClick={() => {
+                  setViewCastsPage(true);
+                  resetDirectorSearch();
+                }}
                 className="hover:underline"
               >
                 View All
@@ -220,9 +281,12 @@ const MovieForm = ({
             )}
           </div>
           <CastForm
+            visible={searchCastResults.length}
+            onChange={handleChangeCast}
+            setForceModalRender={setForceModalRender}
             cast={cast}
             setCast={setCast}
-            results={results}
+            results={searchCastResults}
             setCastValidation={setCastValidation}
             handleSubmitCast={handleSubmitCast}
             casts={casts}
@@ -230,6 +294,7 @@ const MovieForm = ({
         </div>
 
         <input
+          value={releaseDate}
           type="date"
           className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
           onChange={(e) => setReleaseDate(e.target.value)}
