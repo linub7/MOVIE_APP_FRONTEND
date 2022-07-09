@@ -1,26 +1,13 @@
-import Submit from 'components/form/Submit';
 import { useState } from 'react';
-import { commonInputClasses } from 'utils/theme';
-import InputLabel from './inputs/InputLabel';
-import LiveSearch from './search/LiveSearch';
-import TagsInput from './tag/TagsInput';
 // import { results } from 'data/fakeData';
 import toast from 'react-hot-toast';
-import LiveWritersSearch from './search/LiveWritersSearch';
-import InputLabelWithBadge from './inputs/InputLabelWithBadge';
-import CastForm from './cast/CastForm';
-import PosterSelector from './poster/PosterSelector';
-import GenresSelector from './genres/GenresSelector';
-import Selector from './select/Selector';
-import {
-  languageOptions,
-  statusOptions,
-  typeOptions,
-} from 'utils/selectorOptions';
+
 import { searchActor } from 'api/actor';
 import { useSearchCast, useSearchDirector, useSearchWriters } from 'hooks';
 import { searchDirector } from 'api/director';
 import { searchWriter } from 'api/writer';
+import MovieFormLeftSide from './MovieFormLeftSide';
+import MovieFormRightSide from './MovieFormRightSide';
 
 const MovieForm = ({
   videoInfo,
@@ -59,6 +46,7 @@ const MovieForm = ({
   status,
   setCast,
   cast,
+  handleOptionSelect,
 }) => {
   const [castValidation, setCastValidation] = useState(false);
 
@@ -110,8 +98,6 @@ const MovieForm = ({
     setWriters([...writers, input]);
   };
 
-  console.log(director);
-
   const handleRemoveTag = (tagName) => {
     const newTags = tags.filter((tag) => tag !== tagName);
     setTags([...newTags]);
@@ -139,20 +125,6 @@ const MovieForm = ({
     const file = e.target.files[0];
     updatePosterForUI(file);
     setPoster(file);
-  };
-
-  const handleOptionSelect = ({ target }) => {
-    const { name, value } = target;
-    if (name === 'type') {
-      setType(value);
-    }
-    if (name === 'language') {
-      setLanguage(value);
-    }
-
-    if (name === 'status') {
-      setStatus(value);
-    }
   };
 
   const handleChangeDirector = (e) => {
@@ -198,147 +170,50 @@ const MovieForm = ({
   return (
     <div className="flex space-x-3 p-2">
       <div className="w-[70%] space-y-5">
-        <div>
-          <InputLabel htmlFor={'title'}>Title</InputLabel>
-          <input
-            id="title"
-            type="text"
-            className={`${commonInputClasses} border-b-2 font-semibold text-xl`}
-            placeholder="Star Wars: The Rise of Skywalker"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <InputLabel htmlFor={`storyLine`}>Story Line</InputLabel>
-          <textarea
-            id="storyLine"
-            className={`${commonInputClasses} resize-none h-24 border-b-2 placeholder-opacity-25`}
-            placeholder="When it's discovered that the evil Emperor Palpatine did not die at the hands of Darth Vader, the rebels must race against the clock to find out his whereabouts. Finn and Poe lead the Resistance to ..."
-            value={storyLine}
-            onChange={(e) => setStoryLine(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <InputLabel htmlFor={`tags`}>Tags</InputLabel>
-          <TagsInput
-            tag={tag}
-            setTag={setTag}
-            tags={tags}
-            setTags={setTags}
-            handleAddTag={handleAddTag}
-            handleTagChange={handleTagChange}
-            handleRemoveTag={handleRemoveTag}
-          />
-        </div>
-
-        <div>
-          <InputLabel htmlFor={'director'}>Director</InputLabel>
-          <LiveSearch
-            visible={searchDirectorResults.length}
-            value={director?.name}
-            onChange={handleChangeDirector}
-            setValue={setDirector}
-            profile={director}
-            onSelect={handleDirector}
-            results={searchDirectorResults}
-            name="director"
-          />
-        </div>
-        <div>
-          <div className="flex justify-between dark:text-white text-primary transition">
-            <InputLabelWithBadge badge={writers?.length} htmlFor={'Writers'}>
-              Writers
-            </InputLabelWithBadge>
-            {writers.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setViewWritersPage(true)}
-                className="hover:underline"
-              >
-                View All
-              </button>
-            )}
-          </div>
-          <LiveWritersSearch
-            value={writers?.name}
-            onChange={handleChangeWriters}
-            onSelect={(e) => handleAddWriters(e)}
-            results={searchWritersResults}
-            name="writers"
-            visible={searchWritersResults.length}
-          />
-        </div>
-        <div>
-          <div className="flex justify-between dark:text-white text-primary transition">
-            <InputLabelWithBadge badge={casts.length}>
-              Add Cast & Crew
-            </InputLabelWithBadge>
-            {casts.length > 0 && (
-              <button
-                type="button"
-                onClick={() => {
-                  setViewCastsPage(true);
-                  resetDirectorSearch();
-                }}
-                className="hover:underline"
-              >
-                View All
-              </button>
-            )}
-          </div>
-          <CastForm
-            visible={searchCastResults.length}
-            onChange={handleChangeCast}
-            setForceModalRender={setForceModalRender}
-            cast={cast}
-            setCast={setCast}
-            results={searchCastResults}
-            setCastValidation={setCastValidation}
-            handleSubmitCast={handleSubmitCast}
-            casts={casts}
-          />
-        </div>
-
-        <input
-          value={releaseDate}
-          type="date"
-          className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
-          onChange={(e) => setReleaseDate(e.target.value)}
+        <MovieFormLeftSide
+          title={title}
+          setTitle={setTitle}
+          storyLine={storyLine}
+          setStoryLine={setStoryLine}
+          tag={tag}
+          setTag={setTag}
+          tags={tags}
+          setTags={setTags}
+          handleAddTag={handleAddTag}
+          handleTagChange={handleTagChange}
+          handleRemoveTag={handleRemoveTag}
+          searchDirectorResults={searchDirectorResults}
+          director={director}
+          handleChangeDirector={handleChangeDirector}
+          setDirector={setDirector}
+          handleDirector={handleDirector}
+          writers={writers}
+          setViewWritersPage={setViewWritersPage}
+          handleChangeWriters={handleChangeWriters}
+          handleAddWriters={handleAddWriters}
+          searchWritersResults={searchWritersResults}
+          casts={casts}
+          setViewCastsPage={setViewCastsPage}
+          resetDirectorSearch={resetDirectorSearch}
+          searchCastResults={searchCastResults}
+          handleChangeCast={handleChangeCast}
+          cast={cast}
+          setCast={setCast}
+          setForceModalRender={setForceModalRender}
+          setCastValidation={setCastValidation}
+          handleSubmitCast={handleSubmitCast}
+          releaseDate={releaseDate}
+          setReleaseDate={setReleaseDate}
+          handleSubmit={handleSubmit}
         />
-        <Submit value={'Submit'} onSubmit={handleSubmit} type="button" />
       </div>
 
       <div className="w-[30%] mt-9 space-y-5">
-        <PosterSelector
-          label={'Select Poster'}
-          name="poster"
+        <MovieFormRightSide
           handleAddPoster={handleAddPoster}
           selectedPosterForUI={selectedPosterForUI}
-        />
-
-        <GenresSelector
-          badge={genres.length}
+          genres={genres}
           setShowSelectGenresModal={setShowSelectGenresModal}
-        />
-
-        <Selector
-          label={'Type'}
-          name="type"
-          options={typeOptions}
-          handleOptionSelect={handleOptionSelect}
-        />
-        <Selector
-          label={'Language'}
-          name="language"
-          options={languageOptions}
-          handleOptionSelect={handleOptionSelect}
-        />
-        <Selector
-          label={'Status'}
-          name="status"
-          options={statusOptions}
           handleOptionSelect={handleOptionSelect}
         />
       </div>

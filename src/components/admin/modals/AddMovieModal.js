@@ -50,6 +50,20 @@ const AddMovieModal = ({
     console.log('modal re-render');
   }, [forceModalRender]);
 
+  const handleOptionSelect = ({ target }) => {
+    const { name, value } = target;
+    if (name === 'type') {
+      setType(value);
+    }
+    if (name === 'language') {
+      setLanguage(value);
+    }
+
+    if (name === 'status') {
+      setStatus(value);
+    }
+  };
+
   const handleRemoveWriter = (id) => {
     setWriters(writers.filter((writer) => writer.id !== id));
   };
@@ -144,6 +158,7 @@ const AddMovieModal = ({
             showSelectGenresModal={showSelectGenresModal}
             genres={genres}
             setGenres={setGenres}
+            handleOptionSelect={handleOptionSelect}
           />
         )}
         {showSelectGenresModal && (
