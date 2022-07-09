@@ -35,24 +35,32 @@ const MovieForm = ({
   genres,
   setGenres,
   setForceModalRender,
+  director,
+  setDirector,
+  setTag,
+  tag,
+  tags,
+  setTags,
+  setTitle,
+  title,
+  setStoryLine,
+  storyLine,
+  setReleaseDate,
+  releaseDate,
+  setPoster,
+  poster,
+  setSelectedPosterForUI,
+  selectedPosterForUI,
+  setType,
+  type,
+  setLanguage,
+  language,
+  setStatus,
+  status,
+  setCast,
+  cast,
 }) => {
-  const [title, setTitle] = useState('');
-  const [storyLine, setStoryLine] = useState('');
-  const [cast, setCast] = useState({
-    profile: {},
-    roleAs: '',
-    leadActor: false,
-  });
   const [castValidation, setCastValidation] = useState(false);
-  const [director, setDirector] = useState({});
-  const [releaseDate, setReleaseDate] = useState('');
-  const [poster, setPoster] = useState(null);
-  const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
-  const [type, setType] = useState('');
-  const [language, setLanguage] = useState('');
-  const [status, setStatus] = useState('');
-  const [tag, setTag] = useState('');
-  const [tags, setTags] = useState([]);
 
   const {
     handleDirectorSearch,

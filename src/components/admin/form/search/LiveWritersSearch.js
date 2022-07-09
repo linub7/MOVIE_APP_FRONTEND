@@ -60,10 +60,10 @@ const LiveWritersSearch = ({
     setFocusedIndex(nextCount);
   };
 
-  // useEffect(() => {
-  //   if (visible) return setVisibleSearch(visible);
-  //   setVisibleSearch(false);
-  // }, [visible]);
+  useEffect(() => {
+    if (visible) return setVisibleSearch(visible);
+    setVisibleSearch(false);
+  }, [visible]);
 
   return (
     <div className="relative">

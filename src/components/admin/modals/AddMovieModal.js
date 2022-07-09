@@ -20,9 +20,25 @@ const AddMovieModal = ({
   const [showSelectGenresModal, setShowSelectGenresModal] = useState(false);
   const [viewWritersPage, setViewWritersPage] = useState(false);
   const [viewCastsPage, setViewCastsPage] = useState(false);
+  const [director, setDirector] = useState({});
   const [writers, setWriters] = useState([]);
   const [genres, setGenres] = useState([]);
   const [casts, setCasts] = useState([]);
+  const [title, setTitle] = useState('');
+  const [storyLine, setStoryLine] = useState('');
+  const [cast, setCast] = useState({
+    profile: {},
+    roleAs: '',
+    leadActor: false,
+  });
+  const [releaseDate, setReleaseDate] = useState('');
+  const [poster, setPoster] = useState(null);
+  const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
+  const [type, setType] = useState('');
+  const [language, setLanguage] = useState('');
+  const [status, setStatus] = useState('');
+  const [tag, setTag] = useState('');
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -91,9 +107,33 @@ const AddMovieModal = ({
           </div>
         ) : (
           <MovieForm
+            cast={cast}
+            setCast={setCast}
+            language={language}
+            setLanguage={setLanguage}
+            poster={poster}
+            setPoster={setPoster}
+            selectedPosterForUI={selectedPosterForUI}
+            setSelectedPosterForUI={setSelectedPosterForUI}
+            status={status}
+            setStatus={setStatus}
+            tag={tag}
+            setTag={setTag}
+            tags={tags}
+            setTags={setTags}
+            title={title}
+            setTitle={setTitle}
+            storyLine={storyLine}
+            setStoryLine={setStoryLine}
+            type={type}
+            setType={setType}
+            releaseDate={releaseDate}
+            setReleaseDate={setReleaseDate}
             setViewWritersPage={setViewWritersPage}
             setForceModalRender={setForceModalRender}
             videoInfo={videoInfo}
+            director={director}
+            setDirector={setDirector}
             // setWritersList={setWritersList}
             writers={writers}
             setWriters={setWriters}
