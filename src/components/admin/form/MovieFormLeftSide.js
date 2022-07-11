@@ -8,6 +8,7 @@ import TitleInputComponent from './components/TitleInputComponent';
 import WritersInputComponent from './components/WritersInputComponent';
 
 const MovieFormLeftSide = ({
+  loading,
   title,
   setTitle,
   storyLine,
@@ -95,7 +96,12 @@ const MovieFormLeftSide = ({
         releaseDate={releaseDate}
         setReleaseDate={setReleaseDate}
       />
-      <Submit value={'Submit'} onSubmit={handleSubmit} type="button" />
+      <Submit
+        value={'Submit'}
+        onSubmit={handleSubmit}
+        type="button"
+        loading={loading}
+      />
     </>
   );
 };

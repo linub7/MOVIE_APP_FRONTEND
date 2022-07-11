@@ -7,7 +7,6 @@ import AddWriterModal from 'components/admin/modals/AddWriterModal';
 import { useAuth } from 'hooks';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { debounce } from 'utils/debounce';
 
 const AdminDashboard = ({
   toggleModal,
@@ -26,7 +25,7 @@ const AdminDashboard = ({
   const progressBarRef = useRef(null);
   const { auth } = useAuth();
 
-  const handleChange = async (file) => {
+  const handleChangeTrailer = async (file) => {
     progressBarRef.current.continuousStart();
     const formData = new FormData();
     formData.append('video', file); // note: in backend, you have to use `video` in upload trailer route, we set `video` in multer settings for upload trailer -> got to backend/routes/movies.js => line 23
@@ -63,12 +62,13 @@ const AdminDashboard = ({
       {showAddMovieModal && (
         <AddMovieModal
           setShowAddMovieModal={setShowAddMovieModal}
-          handleChange={handleChange}
+          handleChangeTrailer={handleChangeTrailer}
           handleTypeError={handleTypeError}
           videoSelected={videoSelected}
           progressBarRef={progressBarRef}
           setVideoSelected={setVideoSelected}
           videoInfo={videoInfo}
+          setToggleModal={setToggleModal}
         />
       )}
       {showAddActorModal && (
