@@ -2,7 +2,7 @@ import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
 
-const AdminActors = ({
+const AdminWriters = ({
   toggleModal,
   setToggleModal,
   setShowAddActorModal,
@@ -25,9 +25,9 @@ const AdminActors = ({
           avatar={
             'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80'
           }
-          name={'John Doe'}
+          name={'Jonathan Nolan'}
           about={
-            'John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor '
+            'Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor '
           }
           handleDelete={() => {}}
           handleEdit={() => {}}
@@ -36,9 +36,9 @@ const AdminActors = ({
           avatar={
             'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80'
           }
-          name={'John Doe'}
+          name={'Jonathan Nolan'}
           about={
-            'John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor '
+            'Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor '
           }
           handleDelete={() => {}}
           handleEdit={() => {}}
@@ -47,9 +47,9 @@ const AdminActors = ({
           avatar={
             'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80'
           }
-          name={'John Doe'}
+          name={'Jonathan Nolan'}
           about={
-            'John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor John Doe is a cool actor '
+            'Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor Jonathan Nolan is a cool actor '
           }
           handleDelete={() => {}}
           handleEdit={() => {}}
@@ -59,4 +59,4 @@ const AdminActors = ({
   );
 };
 
-export default AdminActors;
+export default AdminWriters;

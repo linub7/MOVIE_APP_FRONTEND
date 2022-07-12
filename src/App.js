@@ -17,6 +17,8 @@ import AdminDashboard from 'pages/admin/dashboard';
 import AdminMovies from 'pages/admin/movies';
 import AdminActors from 'pages/admin/actors';
 import { useState } from 'react';
+import AdminWriters from 'pages/admin/writers';
+import AdminDirectors from 'pages/admin/directors';
 
 function App() {
   const [toggleModal, setToggleModal] = useState(false);
@@ -75,6 +77,32 @@ function App() {
             path="/admin/actors"
             element={
               <AdminActors
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
+                showAddMovieModal={showAddMovieModal}
+                setShowAddMovieModal={setShowAddMovieModal}
+                showAddActorModal={showAddActorModal}
+                setShowAddActorModal={setShowAddActorModal}
+              />
+            }
+          />
+          <Route
+            path="/admin/writers"
+            element={
+              <AdminWriters
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
+                showAddMovieModal={showAddMovieModal}
+                setShowAddMovieModal={setShowAddMovieModal}
+                showAddActorModal={showAddActorModal}
+                setShowAddActorModal={setShowAddActorModal}
+              />
+            }
+          />
+          <Route
+            path="/admin/directors"
+            element={
+              <AdminDirectors
                 toggleModal={toggleModal}
                 setToggleModal={setToggleModal}
                 showAddMovieModal={showAddMovieModal}

@@ -1,4 +1,6 @@
 import { uploadTrailer } from 'api/movie';
+import InfoContainer from 'components/admin/dashboard-components/AppInfoBox';
+import LatestUploads from 'components/admin/dashboard-components/LatestUploads';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddActorModal from 'components/admin/modals/AddActorModal';
 import AddDirectorModal from 'components/admin/modals/AddDirectorModal';
@@ -82,7 +84,13 @@ const AdminDashboard = ({
         <AddDirectorModal setShowAddDirectorModal={setShowAddDirectorModal} />
       )}
 
-      <h1>Admin Dashboard</h1>
+      <div className="grid grid-cols-3 gap-5 my-5">
+        <InfoContainer title={'Total Uploads'} quantity={100} />
+        <InfoContainer title={'Total Reviews'} quantity={100} />
+        <InfoContainer title={'Total Users'} quantity={100} />
+
+        <LatestUploads />
+      </div>
     </AdminLayout>
   );
 };

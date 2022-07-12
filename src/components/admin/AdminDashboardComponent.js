@@ -1,7 +1,7 @@
 import { IoHomeOutline, IoLogOutOutline } from 'react-icons/io5';
 import { BiMoviePlay } from 'react-icons/bi';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { FaUserTie } from 'react-icons/fa';
+import { FaPenNib, FaUserSecret, FaUserTie } from 'react-icons/fa';
 import { useAuth } from 'hooks';
 import Cookies from 'js-cookie';
 
@@ -55,6 +55,24 @@ const AdminDashboardComponent = () => {
             >
               <FaUserTie />
               <span>Actors</span>
+            </NavItem>
+          </li>
+          <li>
+            <NavItem
+              isActive={location.pathname === '/admin/writers' ? true : false}
+              path={'/admin/writers'}
+            >
+              <FaPenNib />
+              <span>Writers</span>
+            </NavItem>
+          </li>
+          <li>
+            <NavItem
+              isActive={location.pathname === '/admin/directors' ? true : false}
+              path={'/admin/directors'}
+            >
+              <FaUserSecret />
+              <span>Directors</span>
             </NavItem>
           </li>
 
