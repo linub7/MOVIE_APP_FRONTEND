@@ -1,3 +1,4 @@
+import { PAGINATION_LIMIT } from 'constants';
 import { IoArrowBackCircle, IoArrowForwardCircle } from 'react-icons/io5';
 
 const CommonPagination = ({ pageNo, setPageNo, artists, totalCount }) => {
@@ -18,7 +19,9 @@ const CommonPagination = ({ pageNo, setPageNo, artists, totalCount }) => {
       <span>{pageNo + 1}</span>
 
       <button
-        disabled={pageNo + 1 >= Math.ceil(totalCount / 7) ? true : false}
+        disabled={
+          pageNo + 1 >= Math.ceil(totalCount / PAGINATION_LIMIT) ? true : false
+        }
         onClick={() => setPageNo(pageNo + 1)}
         type="button"
         className="text-primary dark:text-white"

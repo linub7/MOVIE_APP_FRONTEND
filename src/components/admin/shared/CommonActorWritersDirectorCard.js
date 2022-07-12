@@ -23,11 +23,11 @@ const CommonActorWritersDirectorCard = ({
           className="w-20 h-28 aspect-square object-cover"
         />
         <div className="px-2">
-          <h1 className="text-lg text-primary dark:text-white font-semibold ">
+          <h1 className="text-lg text-primary dark:text-white font-semibold truncate">
             {name}
           </h1>
           {actor && (
-            <p className="text-primary dark:text-white text-sm">
+            <p className="text-primary dark:text-white text-sm opacity-75">
               {about.substring(0, 50)}...
             </p>
           )}
