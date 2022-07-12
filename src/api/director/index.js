@@ -16,6 +16,23 @@ export const createDirector = async (token, formData) => {
   }
 };
 
+export const getDirectors = async (token, pageNo, limit) => {
+  try {
+    const { data } = await client.get(
+      `/directors?pageNo=${pageNo}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const searchDirector = async (query) => {
   const auth = Cookies.get('auth') ? JSON.parse(Cookies.get('auth')) : null;
   try {

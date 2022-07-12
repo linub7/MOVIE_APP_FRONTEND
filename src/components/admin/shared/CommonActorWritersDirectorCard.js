@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CommonCardActions from './CommonCardActions';
 
 const CommonActorWritersDirectorCard = ({
+  actor = false,
   avatar,
   name,
   about,
@@ -25,9 +26,11 @@ const CommonActorWritersDirectorCard = ({
           <h1 className="text-lg text-primary dark:text-white font-semibold ">
             {name}
           </h1>
-          <p className="text-primary dark:text-white text-sm">
-            {about.substring(0, 50)}...
-          </p>
+          {actor && (
+            <p className="text-primary dark:text-white text-sm">
+              {about.substring(0, 50)}...
+            </p>
+          )}
         </div>
         {activeBlur && (
           <CommonCardActions

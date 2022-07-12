@@ -16,9 +16,16 @@ export const createActor = async (token, formData) => {
   }
 };
 
-export const getActors = async () => {
+export const getActors = async (token, pageNo, limit) => {
   try {
-    const { data } = await client.get(`/actors`);
+    const { data } = await client.get(
+      `/actors?pageNo=${pageNo}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return { data };
   } catch (error) {
     const { response } = error;
