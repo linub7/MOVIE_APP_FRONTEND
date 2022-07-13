@@ -1,7 +1,8 @@
-import { deleteWriter, getWriters } from 'api/writer';
+import { deleteWriter, getWriters, searchWriter } from 'api/writer';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import UpdateWriterModal from 'components/admin/modals/UpdateWriterModal';
+import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
@@ -18,6 +19,8 @@ const AdminWriters = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [writerSearchTerm, setWriterSearchTerm] = useState('');
   const [forceRenderWriterPage, setForceRenderWriterPage] = useState(false);
   const [selectedWriterInfo, setSelectedWriterInfo] = useState(null);
   const [showUpdateWriter, setShowUpdateWriter] = useState(false);
@@ -70,6 +73,19 @@ const AdminWriters = ({
     setSelectedWriterInfo(writer);
     setShowUpdateWriter(true);
   };
+
+  const handleSearchWriterSubmit = async (e) => {
+    e.preventDefault();
+    const { data, err } = await searchWriter(writerSearchTerm);
+    if (err) return console.log(err);
+    setSearchResults(data);
+  };
+
+  const handleResetSearchResults = () => {
+    if (searchResults.length === 0) return;
+    setSearchResults([]);
+    setWriterSearchTerm('');
+  };
   return (
     <AdminLayout
       toggleModal={toggleModal}
@@ -86,16 +102,36 @@ const AdminWriters = ({
         <LoadingSpinner />
       ) : (
         <div className="p-5">
+          <div className="flex justify-end mb-5">
+            <AppSearchForm
+              handleResetSearchResults={handleResetSearchResults}
+              placeholder={'Search Actors...'}
+              value={writerSearchTerm}
+              setValue={setWriterSearchTerm}
+              handleSubmitSearch={handleSearchWriterSubmit}
+            />
+          </div>
           <div className="grid grid-cols-3 gap-5 p-5">
-            {writers?.map((writer) => (
-              <CommonActorWritersDirectorCard
-                key={writer._id}
-                avatar={writer?.avatar?.url}
-                name={writer?.name}
-                handleDelete={() => handleDeleteWriter(writer._id)}
-                handleEdit={() => handleEditWriter(writer)}
-              />
-            ))}
+            {searchResults?.length > 0
+              ? searchResults?.map((writer) => (
+                  <CommonActorWritersDirectorCard
+                    key={writer._id}
+                    avatar={writer?.avatar?.url}
+                    name={writer?.name}
+                    about={writer?.about}
+                    handleDelete={() => handleDeleteWriter(writer._id)}
+                    handleEdit={() => handleEditWriter(writer)}
+                  />
+                ))
+              : writers?.map((writer) => (
+                  <CommonActorWritersDirectorCard
+                    key={writer._id}
+                    avatar={writer?.avatar?.url}
+                    name={writer?.name}
+                    handleDelete={() => handleDeleteWriter(writer._id)}
+                    handleEdit={() => handleEditWriter(writer)}
+                  />
+                ))}
           </div>
           <div className="absolute right-4 bottom-4">
             <CommonPagination

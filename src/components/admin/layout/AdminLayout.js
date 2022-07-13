@@ -49,7 +49,7 @@ const AdminLayout = ({
           handleClickAddDirector={handleClickAddDirector}
         />
       )}
-      <div className="flex-1 p-2 max-w-screen-xl relative">
+      <div className="flex-1 max-w-screen-xl relative">
         <AdminNavbar
           toggleModal={toggleModal}
           setToggleModal={setToggleModal}

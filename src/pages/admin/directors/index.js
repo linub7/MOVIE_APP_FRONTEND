@@ -1,8 +1,8 @@
-import { deleteDirector, getDirectors } from 'api/director';
+import { deleteDirector, getDirectors, searchDirector } from 'api/director';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import UpdateDirectorModal from 'components/admin/modals/UpdateDirectorModal';
-import UpdateDirectorWriterModal from 'components/admin/modals/UpdateWriterModal';
+import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
@@ -19,6 +19,8 @@ const AdminDirectors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [directorSearchTerm, setDirectorSearchTerm] = useState('');
   const [forceRenderDirectorPage, setForceRenderDirectorPage] = useState(false);
   const [selectedDirectorInfo, setSelectedDirectorInfo] = useState(null);
   const [showUpdateDirector, setShowUpdateDirector] = useState(false);
@@ -72,6 +74,19 @@ const AdminDirectors = ({
     setSelectedDirectorInfo(director);
   };
 
+  const handleSearchDirectorSubmit = async (e) => {
+    e.preventDefault();
+    const { data, err } = await searchDirector(directorSearchTerm);
+    if (err) return console.log(err);
+    setSearchResults(data);
+  };
+
+  const handleResetSearchResults = () => {
+    if (searchResults.length === 0) return;
+    setSearchResults([]);
+    setDirectorSearchTerm('');
+  };
+
   return (
     <AdminLayout
       toggleModal={toggleModal}
@@ -88,16 +103,36 @@ const AdminDirectors = ({
         <LoadingSpinner />
       ) : (
         <div className="p-5">
+          <div className="flex justify-end mb-5">
+            <AppSearchForm
+              handleResetSearchResults={handleResetSearchResults}
+              placeholder={'Search Actors...'}
+              value={directorSearchTerm}
+              setValue={setDirectorSearchTerm}
+              handleSubmitSearch={handleSearchDirectorSubmit}
+            />
+          </div>
           <div className="grid grid-cols-3 gap-5 p-5">
-            {directors?.map((director) => (
-              <CommonActorWritersDirectorCard
-                key={director._id}
-                avatar={director?.avatar?.url}
-                name={director?.name}
-                handleDelete={() => handleDeleteDirector(director._id)}
-                handleEdit={() => handleEditDirector(director)}
-              />
-            ))}
+            {searchResults?.length > 0
+              ? searchResults?.map((director) => (
+                  <CommonActorWritersDirectorCard
+                    key={director._id}
+                    avatar={director?.avatar?.url}
+                    name={director?.name}
+                    about={director?.about}
+                    handleDelete={() => handleDeleteDirector(director._id)}
+                    handleEdit={() => handleEditDirector(director)}
+                  />
+                ))
+              : directors?.map((director) => (
+                  <CommonActorWritersDirectorCard
+                    key={director._id}
+                    avatar={director?.avatar?.url}
+                    name={director?.name}
+                    handleDelete={() => handleDeleteDirector(director._id)}
+                    handleEdit={() => handleEditDirector(director)}
+                  />
+                ))}
           </div>
 
           <div className="absolute right-4 bottom-4">

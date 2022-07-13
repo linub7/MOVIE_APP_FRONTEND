@@ -1,7 +1,8 @@
-import { deleteActor, getActors } from 'api/actor';
+import { deleteActor, getActors, searchActor } from 'api/actor';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import UpdateActorModal from 'components/admin/modals/UpdateActorModal';
+import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
@@ -18,6 +19,8 @@ const AdminActors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [actorSearchTerm, setActorSearchTerm] = useState('');
   const [forceRenderActorsPage, setForceRenderActorsPage] = useState(false);
   const [selectedActorInfo, setSelectedActorInfo] = useState(null);
   const [showUpdateActor, setShowUpdateActor] = useState(false);
@@ -33,6 +36,7 @@ const AdminActors = ({
 
     return () => {
       setActors([]);
+      setSearchResults([]);
     };
   }, [auth?.token, pageNo, forceRenderActorsPage]);
 
@@ -72,6 +76,19 @@ const AdminActors = ({
     setShowUpdateActor(true);
   };
 
+  const handleSearchActorSubmit = async (e) => {
+    e.preventDefault();
+    const { data, err } = await searchActor(actorSearchTerm);
+    if (err) return console.log(err);
+    setSearchResults(data);
+  };
+
+  const handleResetSearchResults = () => {
+    if (searchResults.length === 0) return;
+    setSearchResults([]);
+    setActorSearchTerm('');
+  };
+
   return (
     <AdminLayout
       toggleModal={toggleModal}
@@ -88,27 +105,50 @@ const AdminActors = ({
         <LoadingSpinner />
       ) : (
         <div className="p-5">
-          <div className="grid grid-cols-3 gap-5 p-5">
-            {actors?.map((actor) => (
-              <CommonActorWritersDirectorCard
-                actor={true}
-                key={actor._id}
-                avatar={actor?.avatar?.url}
-                name={actor?.name}
-                about={actor?.about}
-                handleDelete={() => handleDeleteActor(actor._id)}
-                handleEdit={() => handleEditActor(actor)}
-              />
-            ))}
-          </div>
-          <div className="absolute right-4 bottom-4">
-            <CommonPagination
-              artists={actors}
-              setPageNo={setPageNo}
-              pageNo={pageNo}
-              totalCount={totalActorsCount}
+          <div className="flex justify-end mb-5">
+            <AppSearchForm
+              handleResetSearchResults={handleResetSearchResults}
+              placeholder={'Search Actors...'}
+              value={actorSearchTerm}
+              setValue={setActorSearchTerm}
+              handleSubmitSearch={handleSearchActorSubmit}
             />
           </div>
+          <div className="grid grid-cols-3 gap-5">
+            {searchResults?.length > 0
+              ? searchResults?.map((actor) => (
+                  <CommonActorWritersDirectorCard
+                    actor={true}
+                    key={actor._id}
+                    avatar={actor?.avatar?.url}
+                    name={actor?.name}
+                    about={actor?.about}
+                    handleDelete={() => handleDeleteActor(actor._id)}
+                    handleEdit={() => handleEditActor(actor)}
+                  />
+                ))
+              : actors?.map((actor) => (
+                  <CommonActorWritersDirectorCard
+                    actor={true}
+                    key={actor._id}
+                    avatar={actor?.avatar?.url}
+                    name={actor?.name}
+                    about={actor?.about}
+                    handleDelete={() => handleDeleteActor(actor._id)}
+                    handleEdit={() => handleEditActor(actor)}
+                  />
+                ))}
+          </div>
+          {!searchResults?.length && (
+            <div className="absolute right-4 bottom-4">
+              <CommonPagination
+                artists={actors}
+                setPageNo={setPageNo}
+                pageNo={pageNo}
+                totalCount={totalActorsCount}
+              />
+            </div>
+          )}
         </div>
       )}
 

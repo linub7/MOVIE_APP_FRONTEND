@@ -2,19 +2,26 @@ import ToggleThemeButton from 'components/shared/ToggleThemeButton';
 import { useTheme } from 'hooks';
 import { IoAddSharp } from 'react-icons/io5';
 import { useLocation } from 'react-router-dom';
+import AppSearchForm from './shared/AppSearchForm';
 
 const AdminNavbar = ({ toggleModal, setToggleModal }) => {
   const { toggleTheme } = useTheme();
-
   const { pathname } = useLocation();
+  // const path = pathname.split('/')[2];
+  // const placeholder =
+  //   path === 'actors'
+  //     ? 'Search Actors'
+  //     : path === 'writers'
+  //     ? 'Search Writers'
+  //     : path === 'directors'
+  //     ? 'Search Directors'
+  //     : 'Search Movies';
+
+  // console.log(placeholder);
 
   return (
-    <div className="flex items-center justify-between relative">
-      <input
-        type="text"
-        className="border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary dark:text-white transition bg-transparent rounded text-lg p-1 outline-none"
-        placeholder="Search Movies..."
-      />
+    <div className="flex items-center justify-between relative p-5">
+      <AppSearchForm placeholder={'Search Movies...'} />
 
       <div className="flex items-center space-x-3">
         {pathname === '/admin/dashboard' && (
