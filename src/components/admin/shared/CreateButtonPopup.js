@@ -7,7 +7,7 @@ const CreateButtonPopup = ({
 }) => {
   return (
     <div
-      className="absolute right-0 top-12 animate-scale flex flex-col items-start space-y-5 p-5 dark:bg-secondary bg-white drop-shadow-lg rounded"
+      className="absolute right-0 top-12 animate-scale flex flex-col items-start space-y-5 p-5 dark:bg-secondary bg-white drop-shadow-lg rounded z-20"
       ref={createModalRef}
     >
       <button

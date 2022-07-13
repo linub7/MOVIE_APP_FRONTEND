@@ -33,6 +33,34 @@ export const getActors = async (token, pageNo, limit) => {
   }
 };
 
+export const deleteActor = async (token, actorId) => {
+  try {
+    const { data } = await client.delete(`/actors/${actorId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const updateActor = async (token, actorId, formData) => {
+  try {
+    const { data } = await client.put(`/actors/${actorId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const searchActor = async (query) => {
   const auth = Cookies.get('auth') ? JSON.parse(Cookies.get('auth')) : null;
   try {

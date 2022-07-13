@@ -22,11 +22,20 @@ const AdminLayout = ({
     setToggleModal(false);
   };
 
-  const handleClickAddActor = () => setShowAddActorModal(true);
+  const handleClickAddActor = () => {
+    setToggleModal(false);
+    setShowAddActorModal(true);
+  };
 
-  const handleClickAddWriter = () => setShowAddWriterModal(true);
+  const handleClickAddWriter = () => {
+    setToggleModal(false);
+    setShowAddWriterModal(true);
+  };
 
-  const handleClickAddDirector = () => setShowAddDirectorModal(true);
+  const handleClickAddDirector = () => {
+    setToggleModal(false);
+    setShowAddDirectorModal(true);
+  };
 
   return (
     <div className="flex dark:bg-primary bg-white dark:text-white text-light-subtle">

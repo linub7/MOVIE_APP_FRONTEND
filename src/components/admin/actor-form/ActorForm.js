@@ -1,6 +1,6 @@
 import { createActor } from 'api/actor';
 import { useAuth } from 'hooks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BounceLoader } from 'react-spinners';
 import { genderOptions } from 'utils/selectorOptions';
@@ -8,20 +8,19 @@ import { commonInputClasses } from 'utils/theme';
 import PosterSelector from '../form/poster/PosterSelector';
 import Selector from '../form/select/Selector';
 
-const defaultActorInfo = {
-  name: '',
-  about: '',
-  avatar: null,
-  gender: '',
-};
-
-const ActorForm = ({ title, btnTitle, setShowAddActorModal }) => {
-  const [loading, setLoading] = useState(false);
-  const [actorInfo, setActorInfo] = useState({ ...defaultActorInfo });
+const ActorForm = ({
+  title,
+  btnTitle,
+  setShowAddActorModal,
+  setActorInfo,
+  actorInfo,
+  setSelectedPosterForUI,
+  setLoading,
+  handleSubmit,
+  loading,
+  selectedPosterForUI,
+}) => {
   const { name, about, gender, avatar } = actorInfo;
-  const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
-
-  const { auth } = useAuth();
 
   const handleOnChange = ({ target }) => {
     const { name, value } = target;
@@ -48,36 +47,6 @@ const ActorForm = ({ title, btnTitle, setShowAddActorModal }) => {
       ...actorInfo,
       avatar: file,
     });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!name.trim()) return toast.error('Please enter a name');
-    if (!about.trim()) return toast.error('please enter about');
-    if (!avatar) return toast.error('Please select an avatar');
-    if (!gender) return toast.error('Please select gender');
-
-    setLoading(true);
-
-    const formData = new FormData();
-
-    for (const key in actorInfo) {
-      if (key) formData.append(key, actorInfo[key]);
-    }
-
-    const { err } = await createActor(auth?.token, formData);
-
-    if (err) {
-      toast.error(err?.error);
-      setLoading(false);
-      return;
-    }
-
-    toast.success('Successfully created actor');
-    setShowAddActorModal(false);
-    setLoading(false);
-    setActorInfo({ ...defaultActorInfo });
   };
 
   return (

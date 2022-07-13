@@ -1,6 +1,5 @@
-import { createActor } from 'api/actor';
-import { useAuth } from 'hooks';
-import { useState } from 'react';
+import { updateActor } from 'api/actor';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import ActorForm from '../actor-form/ActorForm';
 import CommonActorModal from './CommonActorModal';
@@ -12,17 +11,28 @@ const defaultActorInfo = {
   gender: '',
 };
 
-const AddActorModal = ({ setShowAddActorModal }) => {
+const UpdateActorModal = ({
+  setShowUpdateActor,
+  initialState,
+  token,
+  setForceRenderActorsPage,
+}) => {
   const [loading, setLoading] = useState(false);
   const [actorInfo, setActorInfo] = useState({ ...defaultActorInfo });
   const { name, about, gender, avatar } = actorInfo;
   const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
-  const { auth } = useAuth();
+  useEffect(() => {
+    initialState && setActorInfo({ ...initialState, avatar: null });
+    setSelectedPosterForUI(initialState?.avatar?.url);
 
-  const handleSubmit = async (e) => {
+    return () => {
+      setActorInfo({ ...defaultActorInfo });
+    };
+  }, [initialState]);
+
+  const handleUpdateActor = async (e) => {
     e.preventDefault();
-
     if (!name.trim()) return toast.error('Please enter a name');
     if (!about.trim()) return toast.error('please enter about');
     if (!avatar) return toast.error('Please select an avatar');
@@ -36,7 +46,7 @@ const AddActorModal = ({ setShowAddActorModal }) => {
       if (key) formData.append(key, actorInfo[key]);
     }
 
-    const { err } = await createActor(auth?.token, formData);
+    const { err } = await updateActor(token, initialState._id, formData);
 
     if (err) {
       toast.error(err?.error);
@@ -44,27 +54,28 @@ const AddActorModal = ({ setShowAddActorModal }) => {
       return;
     }
 
-    toast.success('Successfully created actor');
-    setShowAddActorModal(false);
+    toast.success('Successfully updated actor');
+    setForceRenderActorsPage((prev) => !prev);
+    setShowUpdateActor(false);
     setLoading(false);
     setActorInfo({ ...defaultActorInfo });
   };
   return (
-    <CommonActorModal setShowAddActorModal={setShowAddActorModal}>
+    <CommonActorModal setShowAddActorModal={setShowUpdateActor}>
       <ActorForm
-        title={'Create New Actor'}
-        btnTitle={'Create'}
-        setShowAddActorModal={setShowAddActorModal}
+        title={'Update Actor'}
+        btnTitle={'Update'}
+        setShowAddActorModal={setShowUpdateActor}
         setActorInfo={setActorInfo}
         actorInfo={actorInfo}
         setSelectedPosterForUI={setSelectedPosterForUI}
-        selectedPosterForUI={selectedPosterForUI}
-        handleSubmit={handleSubmit}
-        loading={loading}
         setLoading={setLoading}
+        loading={loading}
+        selectedPosterForUI={selectedPosterForUI}
+        handleSubmit={handleUpdateActor}
       />
     </CommonActorModal>
   );
 };
 
-export default AddActorModal;
+export default UpdateActorModal;
