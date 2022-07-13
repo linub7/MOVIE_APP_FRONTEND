@@ -1,6 +1,7 @@
 import { deleteWriter, getWriters, searchWriter } from 'api/writer';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
+import ConfirmModal from 'components/admin/modals/ConfirmModal';
 import UpdateWriterModal from 'components/admin/modals/UpdateWriterModal';
 import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
@@ -20,6 +21,8 @@ const AdminWriters = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [writerSearchTerm, setWriterSearchTerm] = useState('');
@@ -58,17 +61,19 @@ const AdminWriters = ({
   };
 
   const handleDeleteWriter = async (writerId) => {
-    if (window.confirm('Are you sure you want to delete this actor?')) {
-      progressBarRef.current.continuousStart();
-      const { err } = await deleteWriter(auth?.token, writerId);
-      if (err) {
-        progressBarRef.current.complete();
-        return toast.error(err?.message);
-      }
-      toast.success('ٌWriter deleted successfully');
-      setWriters(writers.filter((writer) => writer._id !== writerId));
+    setDeleteLoading(true);
+    progressBarRef.current.continuousStart();
+    const { err } = await deleteWriter(auth?.token, writerId);
+    if (err) {
       progressBarRef.current.complete();
+      setDeleteLoading(false);
+      return toast.error(err?.message);
     }
+    toast.success('ٌWriter deleted successfully');
+    setWriters(writers.filter((writer) => writer._id !== writerId));
+    setShowConfirmModal(false);
+    setDeleteLoading(false);
+    progressBarRef.current.complete();
   };
 
   const handleEditWriter = async (writer) => {
@@ -127,7 +132,10 @@ const AdminWriters = ({
                       avatar={writer?.avatar?.url}
                       name={writer?.name}
                       about={writer?.about}
-                      handleDelete={() => handleDeleteWriter(writer._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedWriterInfo(writer);
+                      }}
                       handleEdit={() => handleEditWriter(writer)}
                     />
                   ))
@@ -136,7 +144,10 @@ const AdminWriters = ({
                       key={writer._id}
                       avatar={writer?.avatar?.url}
                       name={writer?.name}
-                      handleDelete={() => handleDeleteWriter(writer._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedWriterInfo(writer);
+                      }}
                       handleEdit={() => handleEditWriter(writer)}
                     />
                   )))}
@@ -159,6 +170,16 @@ const AdminWriters = ({
           initialState={selectedWriterInfo}
           token={auth?.token}
           setForceRenderWriterPage={setForceRenderWriterPage}
+        />
+      )}
+
+      {showConfirmModal && (
+        <ConfirmModal
+          setShowConfirmModal={setShowConfirmModal}
+          handleRemove={() => handleDeleteWriter(selectedWriterInfo?._id)}
+          title={'Are you sure?'}
+          subtitle={'This action will remove director permanently'}
+          loading={deleteLoading}
         />
       )}
     </AdminLayout>

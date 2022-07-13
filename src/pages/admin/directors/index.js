@@ -1,6 +1,7 @@
 import { deleteDirector, getDirectors, searchDirector } from 'api/director';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
+import ConfirmModal from 'components/admin/modals/ConfirmModal';
 import UpdateDirectorModal from 'components/admin/modals/UpdateDirectorModal';
 import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
@@ -20,6 +21,8 @@ const AdminDirectors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [directorSearchTerm, setDirectorSearchTerm] = useState('');
@@ -58,17 +61,19 @@ const AdminDirectors = ({
   };
 
   const handleDeleteDirector = async (directorId) => {
-    if (window.confirm('Are you sure you want to delete this actor?')) {
-      progressBarRef.current.continuousStart();
-      const { err } = await deleteDirector(auth?.token, directorId);
-      if (err) {
-        progressBarRef.current.complete();
-        return toast.error(err?.message);
-      }
-      toast.success('Director deleted successfully');
-      setDirectors(directors.filter((director) => director._id !== directorId));
+    setDeleteLoading(true);
+    progressBarRef.current.continuousStart();
+    const { err } = await deleteDirector(auth?.token, directorId);
+    if (err) {
+      setDeleteLoading(false);
       progressBarRef.current.complete();
+      return toast.error(err?.message);
     }
+    toast.success('Director deleted successfully');
+    setDirectors(directors.filter((director) => director._id !== directorId));
+    setShowConfirmModal(false);
+    setDeleteLoading(false);
+    progressBarRef.current.complete();
   };
 
   const handleEditDirector = async (director) => {
@@ -129,7 +134,10 @@ const AdminDirectors = ({
                       avatar={director?.avatar?.url}
                       name={director?.name}
                       about={director?.about}
-                      handleDelete={() => handleDeleteDirector(director._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedDirectorInfo(director);
+                      }}
                       handleEdit={() => handleEditDirector(director)}
                     />
                   ))
@@ -138,7 +146,10 @@ const AdminDirectors = ({
                       key={director._id}
                       avatar={director?.avatar?.url}
                       name={director?.name}
-                      handleDelete={() => handleDeleteDirector(director._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedDirectorInfo(director);
+                      }}
                       handleEdit={() => handleEditDirector(director)}
                     />
                   )))}
@@ -162,6 +173,15 @@ const AdminDirectors = ({
           initialState={selectedDirectorInfo}
           token={auth?.token}
           setForceRenderDirectorPage={setForceRenderDirectorPage}
+        />
+      )}
+      {showConfirmModal && (
+        <ConfirmModal
+          setShowConfirmModal={setShowConfirmModal}
+          handleRemove={() => handleDeleteDirector(selectedDirectorInfo?._id)}
+          title={'Are you sure?'}
+          subtitle={'This action will remove director permanently'}
+          loading={deleteLoading}
         />
       )}
     </AdminLayout>

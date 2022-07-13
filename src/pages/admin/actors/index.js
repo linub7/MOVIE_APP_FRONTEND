@@ -1,6 +1,7 @@
 import { deleteActor, getActors, searchActor } from 'api/actor';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
+import ConfirmModal from 'components/admin/modals/ConfirmModal';
 import UpdateActorModal from 'components/admin/modals/UpdateActorModal';
 import AppSearchForm from 'components/admin/shared/AppSearchForm';
 import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorWritersDirectorCard';
@@ -20,6 +21,8 @@ const AdminActors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [actorSearchTerm, setActorSearchTerm] = useState('');
@@ -59,17 +62,19 @@ const AdminActors = ({
   };
 
   const handleDeleteActor = async (actorId) => {
-    if (window.confirm('Are you sure you want to delete this actor?')) {
-      progressBarRef.current.continuousStart();
-      const { err } = await deleteActor(auth?.token, actorId);
-      if (err) {
-        progressBarRef.current.complete();
-        return toast.error(err?.message);
-      }
-      toast.success('Actor deleted successfully');
-      setActors(actors.filter((actor) => actor._id !== actorId));
+    setDeleteLoading(true);
+    progressBarRef.current.continuousStart();
+    const { err } = await deleteActor(auth?.token, actorId);
+    if (err) {
+      setDeleteLoading(false);
       progressBarRef.current.complete();
+      return toast.error(err?.message);
     }
+    toast.success('Actor deleted successfully');
+    setActors(actors.filter((actor) => actor._id !== actorId));
+    setShowConfirmModal(false);
+    setDeleteLoading(false);
+    progressBarRef.current.complete();
   };
 
   const handleEditActor = async (actor) => {
@@ -131,7 +136,10 @@ const AdminActors = ({
                       avatar={actor?.avatar?.url}
                       name={actor?.name}
                       about={actor?.about}
-                      handleDelete={() => handleDeleteActor(actor._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedActorInfo(actor);
+                      }}
                       handleEdit={() => handleEditActor(actor)}
                     />
                   ))
@@ -142,7 +150,11 @@ const AdminActors = ({
                       avatar={actor?.avatar?.url}
                       name={actor?.name}
                       about={actor?.about}
-                      handleDelete={() => handleDeleteActor(actor._id)}
+                      // handleDelete={() => handleDeleteActor(actor._id)}
+                      handleDelete={() => {
+                        setShowConfirmModal(true);
+                        setSelectedActorInfo(actor);
+                      }}
                       handleEdit={() => handleEditActor(actor)}
                     />
                   )))}
@@ -167,6 +179,16 @@ const AdminActors = ({
           update={true}
           token={auth?.token}
           setForceRenderActorsPage={setForceRenderActorsPage}
+        />
+      )}
+
+      {showConfirmModal && (
+        <ConfirmModal
+          setShowConfirmModal={setShowConfirmModal}
+          handleRemove={() => handleDeleteActor(selectedActorInfo?._id)}
+          title={'Are you sure?'}
+          subtitle={'This action will remove actor permanently'}
+          loading={deleteLoading}
         />
       )}
     </AdminLayout>
