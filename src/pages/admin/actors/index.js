@@ -7,6 +7,7 @@ import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorW
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
+import ResultsNotFound from 'components/shared/ResultsNotFound';
 import { PAGINATION_LIMIT } from 'constants';
 import { useAuth } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
@@ -19,6 +20,7 @@ const AdminActors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [actorSearchTerm, setActorSearchTerm] = useState('');
   const [forceRenderActorsPage, setForceRenderActorsPage] = useState(false);
@@ -78,13 +80,17 @@ const AdminActors = ({
 
   const handleSearchActorSubmit = async (e) => {
     e.preventDefault();
-    const { data, err } = await searchActor(actorSearchTerm);
-    if (err) return console.log(err);
-    setSearchResults(data);
+    if (actorSearchTerm && actorSearchTerm.length > 2) {
+      const { data, err } = await searchActor(actorSearchTerm);
+      if (err) return console.log(err);
+      setSearchResults(data);
+      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+    }
   };
 
   const handleResetSearchResults = () => {
-    if (searchResults.length === 0) return;
+    // if (searchResults.length === 0) return;
+    setResultsNotFound(false);
     setSearchResults([]);
     setActorSearchTerm('');
   };
@@ -114,32 +120,34 @@ const AdminActors = ({
               handleSubmitSearch={handleSearchActorSubmit}
             />
           </div>
+          {resultsNotFound && <ResultsNotFound />}
           <div className="grid grid-cols-3 gap-5">
-            {searchResults?.length > 0
-              ? searchResults?.map((actor) => (
-                  <CommonActorWritersDirectorCard
-                    actor={true}
-                    key={actor._id}
-                    avatar={actor?.avatar?.url}
-                    name={actor?.name}
-                    about={actor?.about}
-                    handleDelete={() => handleDeleteActor(actor._id)}
-                    handleEdit={() => handleEditActor(actor)}
-                  />
-                ))
-              : actors?.map((actor) => (
-                  <CommonActorWritersDirectorCard
-                    actor={true}
-                    key={actor._id}
-                    avatar={actor?.avatar?.url}
-                    name={actor?.name}
-                    about={actor?.about}
-                    handleDelete={() => handleDeleteActor(actor._id)}
-                    handleEdit={() => handleEditActor(actor)}
-                  />
-                ))}
+            {!resultsNotFound &&
+              (searchResults?.length > 0
+                ? searchResults?.map((actor) => (
+                    <CommonActorWritersDirectorCard
+                      actor={true}
+                      key={actor._id}
+                      avatar={actor?.avatar?.url}
+                      name={actor?.name}
+                      about={actor?.about}
+                      handleDelete={() => handleDeleteActor(actor._id)}
+                      handleEdit={() => handleEditActor(actor)}
+                    />
+                  ))
+                : actors?.map((actor) => (
+                    <CommonActorWritersDirectorCard
+                      actor={true}
+                      key={actor._id}
+                      avatar={actor?.avatar?.url}
+                      name={actor?.name}
+                      about={actor?.about}
+                      handleDelete={() => handleDeleteActor(actor._id)}
+                      handleEdit={() => handleEditActor(actor)}
+                    />
+                  )))}
           </div>
-          {!searchResults?.length && (
+          {!resultsNotFound && !searchResults?.length && (
             <div className="absolute right-4 bottom-4">
               <CommonPagination
                 artists={actors}

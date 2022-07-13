@@ -7,6 +7,7 @@ import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorW
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
+import ResultsNotFound from 'components/shared/ResultsNotFound';
 import { PAGINATION_LIMIT } from 'constants';
 import { useAuth } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
@@ -19,6 +20,7 @@ const AdminDirectors = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [directorSearchTerm, setDirectorSearchTerm] = useState('');
   const [forceRenderDirectorPage, setForceRenderDirectorPage] = useState(false);
@@ -76,13 +78,17 @@ const AdminDirectors = ({
 
   const handleSearchDirectorSubmit = async (e) => {
     e.preventDefault();
-    const { data, err } = await searchDirector(directorSearchTerm);
-    if (err) return console.log(err);
-    setSearchResults(data);
+    if (directorSearchTerm && directorSearchTerm.length > 2) {
+      const { data, err } = await searchDirector(directorSearchTerm);
+      if (err) return console.log(err);
+      setSearchResults(data);
+      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+    }
   };
 
   const handleResetSearchResults = () => {
-    if (searchResults.length === 0) return;
+    // if (searchResults.length === 0) return;
+    setResultsNotFound(false);
     setSearchResults([]);
     setDirectorSearchTerm('');
   };
@@ -112,37 +118,41 @@ const AdminDirectors = ({
               handleSubmitSearch={handleSearchDirectorSubmit}
             />
           </div>
-          <div className="grid grid-cols-3 gap-5 p-5">
-            {searchResults?.length > 0
-              ? searchResults?.map((director) => (
-                  <CommonActorWritersDirectorCard
-                    key={director._id}
-                    avatar={director?.avatar?.url}
-                    name={director?.name}
-                    about={director?.about}
-                    handleDelete={() => handleDeleteDirector(director._id)}
-                    handleEdit={() => handleEditDirector(director)}
-                  />
-                ))
-              : directors?.map((director) => (
-                  <CommonActorWritersDirectorCard
-                    key={director._id}
-                    avatar={director?.avatar?.url}
-                    name={director?.name}
-                    handleDelete={() => handleDeleteDirector(director._id)}
-                    handleEdit={() => handleEditDirector(director)}
-                  />
-                ))}
-          </div>
 
-          <div className="absolute right-4 bottom-4">
-            <CommonPagination
-              artists={directors}
-              setPageNo={setPageNo}
-              pageNo={pageNo}
-              totalCount={totalDirectorsCount}
-            />
+          {resultsNotFound && <ResultsNotFound />}
+          <div className="grid grid-cols-3 gap-5 p-5">
+            {!resultsNotFound &&
+              (searchResults?.length > 0
+                ? searchResults?.map((director) => (
+                    <CommonActorWritersDirectorCard
+                      key={director._id}
+                      avatar={director?.avatar?.url}
+                      name={director?.name}
+                      about={director?.about}
+                      handleDelete={() => handleDeleteDirector(director._id)}
+                      handleEdit={() => handleEditDirector(director)}
+                    />
+                  ))
+                : directors?.map((director) => (
+                    <CommonActorWritersDirectorCard
+                      key={director._id}
+                      avatar={director?.avatar?.url}
+                      name={director?.name}
+                      handleDelete={() => handleDeleteDirector(director._id)}
+                      handleEdit={() => handleEditDirector(director)}
+                    />
+                  )))}
           </div>
+          {!resultsNotFound && !searchResults?.length && (
+            <div className="absolute right-4 bottom-4">
+              <CommonPagination
+                artists={directors}
+                setPageNo={setPageNo}
+                pageNo={pageNo}
+                totalCount={totalDirectorsCount}
+              />
+            </div>
+          )}
         </div>
       )}
 

@@ -7,6 +7,7 @@ import CommonActorWritersDirectorCard from 'components/admin/shared/CommonActorW
 import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
+import ResultsNotFound from 'components/shared/ResultsNotFound';
 import { PAGINATION_LIMIT } from 'constants';
 import { useAuth } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
@@ -19,6 +20,7 @@ const AdminWriters = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
+  const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [writerSearchTerm, setWriterSearchTerm] = useState('');
   const [forceRenderWriterPage, setForceRenderWriterPage] = useState(false);
@@ -76,13 +78,17 @@ const AdminWriters = ({
 
   const handleSearchWriterSubmit = async (e) => {
     e.preventDefault();
-    const { data, err } = await searchWriter(writerSearchTerm);
-    if (err) return console.log(err);
-    setSearchResults(data);
+    if (writerSearchTerm && writerSearchTerm.length > 2) {
+      const { data, err } = await searchWriter(writerSearchTerm);
+      if (err) return console.log(err);
+      setSearchResults(data);
+      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+    }
   };
 
   const handleResetSearchResults = () => {
-    if (searchResults.length === 0) return;
+    // if (searchResults.length === 0) return;
+    setResultsNotFound(false);
     setSearchResults([]);
     setWriterSearchTerm('');
   };
@@ -111,36 +117,40 @@ const AdminWriters = ({
               handleSubmitSearch={handleSearchWriterSubmit}
             />
           </div>
+          {resultsNotFound && <ResultsNotFound />}
           <div className="grid grid-cols-3 gap-5 p-5">
-            {searchResults?.length > 0
-              ? searchResults?.map((writer) => (
-                  <CommonActorWritersDirectorCard
-                    key={writer._id}
-                    avatar={writer?.avatar?.url}
-                    name={writer?.name}
-                    about={writer?.about}
-                    handleDelete={() => handleDeleteWriter(writer._id)}
-                    handleEdit={() => handleEditWriter(writer)}
-                  />
-                ))
-              : writers?.map((writer) => (
-                  <CommonActorWritersDirectorCard
-                    key={writer._id}
-                    avatar={writer?.avatar?.url}
-                    name={writer?.name}
-                    handleDelete={() => handleDeleteWriter(writer._id)}
-                    handleEdit={() => handleEditWriter(writer)}
-                  />
-                ))}
+            {!resultsNotFound &&
+              (searchResults?.length > 0
+                ? searchResults?.map((writer) => (
+                    <CommonActorWritersDirectorCard
+                      key={writer._id}
+                      avatar={writer?.avatar?.url}
+                      name={writer?.name}
+                      about={writer?.about}
+                      handleDelete={() => handleDeleteWriter(writer._id)}
+                      handleEdit={() => handleEditWriter(writer)}
+                    />
+                  ))
+                : writers?.map((writer) => (
+                    <CommonActorWritersDirectorCard
+                      key={writer._id}
+                      avatar={writer?.avatar?.url}
+                      name={writer?.name}
+                      handleDelete={() => handleDeleteWriter(writer._id)}
+                      handleEdit={() => handleEditWriter(writer)}
+                    />
+                  )))}
           </div>
-          <div className="absolute right-4 bottom-4">
-            <CommonPagination
-              artists={writers}
-              setPageNo={setPageNo}
-              pageNo={pageNo}
-              totalCount={totalWritersCount}
-            />
-          </div>
+          {!resultsNotFound && !searchResults?.length && (
+            <div className="absolute right-4 bottom-4">
+              <CommonPagination
+                artists={writers}
+                setPageNo={setPageNo}
+                pageNo={pageNo}
+                totalCount={totalWritersCount}
+              />
+            </div>
+          )}
         </div>
       )}
       {showUpdateWriter && (
