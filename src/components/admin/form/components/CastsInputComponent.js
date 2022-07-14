@@ -16,10 +16,10 @@ const CastsInputComponent = ({
   return (
     <div>
       <div className="flex justify-between dark:text-white text-primary transition">
-        <InputLabelWithBadge badge={casts.length}>
+        <InputLabelWithBadge badge={casts?.length}>
           Add Cast & Crew
         </InputLabelWithBadge>
-        {casts.length > 0 && (
+        {casts?.length > 0 && (
           <button
             type="button"
             onClick={() => {
@@ -33,7 +33,7 @@ const CastsInputComponent = ({
         )}
       </div>
       <CastForm
-        visible={searchCastResults.length}
+        visible={searchCastResults?.length}
         onChange={handleChangeCast}
         setForceModalRender={setForceModalRender}
         cast={cast}

@@ -16,6 +16,7 @@ const SearchWritersProvider = ({ children }) => {
     if (err) return toast.error(err?.message);
 
     if (!data.length) {
+      setSearchWritersResults([]);
       return setSearchWritersResultsNotFound(true);
     }
 

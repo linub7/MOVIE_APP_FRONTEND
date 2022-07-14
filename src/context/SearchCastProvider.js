@@ -10,15 +10,33 @@ const SearchCastProvider = ({ children }) => {
   const [searchCastResultsNotFound, setSearchCastResultsNotFound] =
     useState(false);
 
+  // const search = async (method, query, updaterFun) => {
+  //     const { error, results } = await method(query);
+  //     if (error) return updateNotification("error", error);
+
+  //     if (!results.length) {
+  //       setResults([]);
+  //       updaterFun && updaterFun([]);
+  //       return setResultNotFound(true);
+  //     }
+
+  //     setResultNotFound(false);
+  //     setResults(results);
+  //     updaterFun && updaterFun([...results]);
+  //   };
+
   const search = async (method, query) => {
     const { err, data } = await method(query);
 
     if (err) return toast.error(err?.message);
 
     if (!data.length) {
+      // return setSearchCastResultsNotFound(true);
+      setSearchCastResults([]);
       return setSearchCastResultsNotFound(true);
     }
 
+    setSearchCastResultsNotFound(false);
     setSearchCastResults(data);
   };
 

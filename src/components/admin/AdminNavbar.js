@@ -18,10 +18,16 @@ const AdminNavbar = ({ toggleModal, setToggleModal }) => {
   //     : 'Search Movies';
 
   // console.log(placeholder);
+  const showAppSearchForm =
+    pathname === '/admin/movies' || pathname === '/admin/dashboard';
 
   return (
     <div className="flex items-center justify-between relative p-5">
-      <AppSearchForm placeholder={'Search Movies...'} />
+      {showAppSearchForm ? (
+        <AppSearchForm placeholder={'Search Movies...'} />
+      ) : (
+        <div></div>
+      )}
 
       <div className="flex items-center space-x-3">
         {pathname === '/admin/dashboard' && (

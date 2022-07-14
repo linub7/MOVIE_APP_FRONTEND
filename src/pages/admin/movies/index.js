@@ -7,6 +7,7 @@ import LoadingSpinner from 'components/shared/LoadingSpinner';
 import { PAGINATION_LIMIT } from 'constants';
 import { useAuth } from 'hooks';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminMovies = ({
   toggleModal,
@@ -21,7 +22,7 @@ const AdminMovies = ({
   const [pageNo, setPageNo] = useState(0);
   const { auth } = useAuth();
 
-  console.log(movies);
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetMovies();
@@ -46,6 +47,17 @@ const AdminMovies = ({
     setTotalMoviesCount(data?.count);
     setLoading(false);
   };
+
+  const handleMovieEdit = (movie) => {
+    navigate(`/admin/movies/edit/${movie._id}`, { state: { movie } });
+  };
+
+  const handleMovieDelete = (movieId) => {};
+
+  const handleMovieRedirect = (movieId) => {
+    navigate(`/admin/movies/${movieId}`);
+  };
+
   return (
     <AdminLayout
       toggleModal={toggleModal}
@@ -64,9 +76,9 @@ const AdminMovies = ({
             <MovieListItem
               key={movie._id}
               poster={movie?.poster?.url}
-              handleDelete={() => {}}
-              handleEdit={() => {}}
-              handleRedirect={() => {}}
+              handleDelete={() => handleMovieDelete(movie._id)}
+              handleEdit={() => handleMovieEdit(movie)}
+              handleRedirect={() => handleMovieRedirect(movie._id)}
               title={movie?.title}
               type={movie?.type}
               genres={movie?.genres}

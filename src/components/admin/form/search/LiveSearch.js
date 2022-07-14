@@ -70,7 +70,15 @@ const LiveSearch = ({
   useEffect(() => {
     if (visible) return setVisibleSearch(visible);
     setVisibleSearch(false);
+
+    return () => {
+      setVisibleSearch(false);
+    };
   }, [visible]);
+
+  useEffect(() => {
+    setVisibleSearch(false);
+  }, []);
 
   return (
     <div className="relative">

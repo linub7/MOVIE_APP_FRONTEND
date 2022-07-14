@@ -16,9 +16,12 @@ const SearchDirectorProvider = ({ children }) => {
     if (err) return toast.error(err?.message);
 
     if (!data.length) {
+      // return setSearchDirectorResultsNotFound(true);
+      setSearchDirectorResults([]);
       return setSearchDirectorResultsNotFound(true);
     }
 
+    setSearchDirectorResultsNotFound(false);
     setSearchDirectorResults(data);
   };
 

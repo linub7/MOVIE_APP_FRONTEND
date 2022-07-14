@@ -12,7 +12,7 @@ const DirectorInputComponent = ({
     <div>
       <InputLabel htmlFor={'director'}>Director</InputLabel>
       <LiveSearch
-        visible={searchDirectorResults.length}
+        visible={searchDirectorResults?.length}
         value={director?.name}
         onChange={handleChangeDirector}
         setValue={setDirector}

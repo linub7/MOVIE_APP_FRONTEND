@@ -46,3 +46,41 @@ export const uploadMovie = async (token, formData) => {
     return { err: response?.data };
   }
 };
+
+export const updateMovieWithPoster = async (token, movieId, formData) => {
+  try {
+    const { data } = await client.patch(
+      `/movie/with-poster/${movieId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const updateMovieWithoutPoster = async (token, movieId, formData) => {
+  try {
+    const { data } = await client.patch(
+      `/movie/without-poster/${movieId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

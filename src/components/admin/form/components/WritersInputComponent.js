@@ -14,7 +14,7 @@ const WritersInputComponent = ({
         <InputLabelWithBadge badge={writers?.length} htmlFor={'Writers'}>
           Writers
         </InputLabelWithBadge>
-        {writers.length > 0 && (
+        {writers?.length > 0 && (
           <button
             type="button"
             onClick={() => setViewWritersPage(true)}
@@ -30,7 +30,7 @@ const WritersInputComponent = ({
         onSelect={(e) => handleAddWriters(e)}
         results={searchWritersResults}
         name="writers"
-        visible={searchWritersResults.length}
+        visible={searchWritersResults?.length}
       />
     </div>
   );

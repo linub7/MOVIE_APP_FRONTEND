@@ -3,8 +3,8 @@ import { IoTrashOutline } from 'react-icons/io5';
 
 const WritersModal = ({ writers, handleRemoveWriter, setViewWritersPage }) => {
   useEffect(() => {
-    if (writers.length === 0) setViewWritersPage(false);
-  }, [writers.length]);
+    if (writers?.length === 0) setViewWritersPage(false);
+  }, [writers?.length]);
 
   return writers?.map((writer) => (
     <div
@@ -13,14 +13,14 @@ const WritersModal = ({ writers, handleRemoveWriter, setViewWritersPage }) => {
     >
       <div className="flex items-center space-x-4">
         <img
-          src={writer.avatar}
-          alt={writer.name}
+          src={writer?.avatar}
+          alt={writer?.name}
           className="w-12 h-12 rounded-full object-cover"
         />
-        <p>{writer.name}</p>
+        <p>{writer?.name}</p>
       </div>
       <button
-        onClick={() => handleRemoveWriter(writer.id)}
+        onClick={() => handleRemoveWriter(writer?.id)}
         className="dark:text-white text-primary text-lg dark:hover:text-red-600 hover:text-red-600 transition p-2"
       >
         <IoTrashOutline />
