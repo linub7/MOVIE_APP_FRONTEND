@@ -1,4 +1,5 @@
 import client from 'api/client';
+import Cookies from 'js-cookie';
 
 export const uploadTrailer = async (token, formData) => {
   try {
@@ -78,6 +79,35 @@ export const updateMovieWithoutPoster = async (token, movieId, formData) => {
         },
       }
     );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const searchMovie = async (query) => {
+  const auth = Cookies.get('auth') ? JSON.parse(Cookies.get('auth')) : null;
+  try {
+    const { data } = await client.get(`/movies/search?title=${query}`, {
+      headers: {
+        Authorization: `Bearer ${auth?.token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const deleteMovie = async (token, directorId) => {
+  try {
+    const { data } = await client.delete(`/movie/${directorId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return { data };
   } catch (error) {
     const { response } = error;

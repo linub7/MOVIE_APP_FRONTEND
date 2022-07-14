@@ -18,8 +18,7 @@ const AdminNavbar = ({ toggleModal, setToggleModal }) => {
   //     : 'Search Movies';
 
   // console.log(placeholder);
-  const showAppSearchForm =
-    pathname === '/admin/movies' || pathname === '/admin/dashboard';
+  const showAppSearchForm = pathname === '/admin/dashboard';
 
   return (
     <div className="flex items-center justify-between relative p-5">
