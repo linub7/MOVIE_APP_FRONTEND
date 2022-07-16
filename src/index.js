@@ -9,6 +9,7 @@ import AuthProvider from 'context/AuthProvider';
 import SearchDirectorProvider from 'context/SearchDirectorProvider';
 import SearchCastProvider from 'context/SearchCastProvider';
 import SearchWritersProvider from 'context/SearchWritersProvider';
+import MoviesProvider from 'context/MoviesProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,9 @@ root.render(
           <SearchWritersProvider>
             <ThemeProvider>
               <AuthProvider>
-                <App />
+                <MoviesProvider>
+                  <App />
+                </MoviesProvider>
               </AuthProvider>
             </ThemeProvider>
           </SearchWritersProvider>

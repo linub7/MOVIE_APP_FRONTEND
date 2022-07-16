@@ -1,4 +1,4 @@
-import { deleteMovie, getMovies, searchMovie } from 'api/movie';
+import { searchMovie } from 'api/movie';
 import MovieListItem from 'components/admin/dashboard-components/MovieListItem';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
@@ -8,10 +8,8 @@ import CommonPagination from 'components/admin/shared/CommonPagination';
 import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
 import ResultsNotFound from 'components/shared/ResultsNotFound';
-import { PAGINATION_LIMIT } from 'constants';
-import { useAuth } from 'hooks';
+import { useAuth, useMovies } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const AdminMovies = ({
@@ -21,17 +19,25 @@ const AdminMovies = ({
   setShowAddMovieModal,
   showAddMovieModal,
 }) => {
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [resultsNotFound, setResultsNotFound] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [movieSearchTerm, setMovieSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const [totalMoviesCount, setTotalMoviesCount] = useState(0);
-  const [pageNo, setPageNo] = useState(0);
   const { auth } = useAuth();
+  const {
+    loading,
+    setMovies,
+    movies,
+    totalMoviesCount,
+    pageNo,
+    setPageNo,
+    handleGetMovies,
+    selectedMovie,
+    setSelectedMovie,
+    deleteLoading,
+    showConfirmModal,
+    setShowConfirmModal,
+    handleDeleteMovie,
+  } = useMovies();
 
   const navigate = useNavigate();
   const progressBarRef = useRef(null);
@@ -43,22 +49,6 @@ const AdminMovies = ({
       setMovies([]);
     };
   }, [auth?.token, pageNo]);
-
-  const handleGetMovies = async () => {
-    setLoading(true);
-    const { data, err } = await getMovies(
-      auth?.token,
-      pageNo,
-      PAGINATION_LIMIT
-    );
-    if (err) {
-      setLoading(false);
-      return console.log(err);
-    }
-    setMovies(data?.result);
-    setTotalMoviesCount(data?.count);
-    setLoading(false);
-  };
 
   const handleMovieEdit = (movie) => {
     navigate(`/admin/movies/edit/${movie._id}`, { state: { movie } });
@@ -74,7 +64,6 @@ const AdminMovies = ({
   };
 
   const handleResetSearchResults = () => {
-    // if (searchResults.length === 0) return;
     setResultsNotFound(false);
     setSearchResults([]);
     setMovieSearchTerm('');
@@ -88,22 +77,6 @@ const AdminMovies = ({
       setSearchResults(data);
       data == false ? setResultsNotFound(true) : setResultsNotFound(false);
     }
-  };
-
-  const handleDeleteMovie = async (movieId) => {
-    setDeleteLoading(true);
-    progressBarRef.current.continuousStart();
-    const { err } = await deleteMovie(auth?.token, movieId);
-    if (err) {
-      progressBarRef.current.complete();
-      setDeleteLoading(false);
-      return toast.error(err?.message);
-    }
-    toast.success('ٌWriter deleted successfully');
-    setMovies(movies.filter((movie) => movie._id !== movieId));
-    setShowConfirmModal(false);
-    setDeleteLoading(false);
-    progressBarRef.current.complete();
   };
 
   return (
@@ -174,7 +147,9 @@ const AdminMovies = ({
       {showConfirmModal && (
         <ConfirmModal
           setShowConfirmModal={setShowConfirmModal}
-          handleRemove={() => handleDeleteMovie(selectedMovie?._id)}
+          handleRemove={() =>
+            handleDeleteMovie(selectedMovie?._id, progressBarRef)
+          }
           title={'Are you sure?'}
           subtitle={'This action will remove director permanently'}
           loading={deleteLoading}

@@ -6,9 +6,13 @@ import AddActorModal from 'components/admin/modals/AddActorModal';
 import AddDirectorModal from 'components/admin/modals/AddDirectorModal';
 import AddMovieModal from 'components/admin/modals/AddMovieModal';
 import AddWriterModal from 'components/admin/modals/AddWriterModal';
-import { useAuth } from 'hooks';
-import { useRef, useState } from 'react';
+import ConfirmModal from 'components/admin/modals/ConfirmModal';
+import LoadingProgressBar from 'components/admin/shared/LoadingProgressBar';
+import LoadingSpinner from 'components/shared/LoadingSpinner';
+import { useAuth, useMovies } from 'hooks';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = ({
   toggleModal,
@@ -24,8 +28,29 @@ const AdminDashboard = ({
 }) => {
   const [videoSelected, setVideoSelected] = useState(false);
   const [videoInfo, setVideoInfo] = useState({});
+  const navigate = useNavigate();
+
   const progressBarRef = useRef(null);
   const { auth } = useAuth();
+  const {
+    loading,
+    handleGetLatestUploads,
+    latestUploads,
+    setLatestUploads,
+    selectedMovie,
+    setSelectedMovie,
+    deleteLoading,
+    showConfirmModal,
+    setShowConfirmModal,
+    handleDeleteMovie,
+  } = useMovies();
+
+  useEffect(() => {
+    handleGetLatestUploads();
+    return () => {
+      setLatestUploads([]);
+    };
+  }, [auth?.token, deleteLoading]);
 
   const handleChangeTrailer = async (file) => {
     progressBarRef.current.continuousStart();
@@ -52,6 +77,19 @@ const AdminDashboard = ({
 
   const handleTypeError = (error) => toast.error(error);
 
+  const handleMovieEdit = (movie) => {
+    navigate(`/admin/movies/edit/${movie._id}`, { state: { movie } });
+  };
+
+  const handleMovieRedirect = (movieId) => {
+    navigate(`/admin/movies/${movieId}`);
+  };
+
+  const handleMovieDelete = (movie) => {
+    setShowConfirmModal(true);
+    setSelectedMovie(movie);
+  };
+
   return (
     <AdminLayout
       toggleModal={toggleModal}
@@ -61,6 +99,7 @@ const AdminDashboard = ({
       setShowAddDirectorModal={setShowAddDirectorModal}
       setShowAddWriterModal={setShowAddWriterModal}
     >
+      <LoadingProgressBar progressBarRef={progressBarRef} />
       {showAddMovieModal && (
         <AddMovieModal
           setShowAddMovieModal={setShowAddMovieModal}
@@ -84,13 +123,37 @@ const AdminDashboard = ({
         <AddDirectorModal setShowAddDirectorModal={setShowAddDirectorModal} />
       )}
 
-      <div className="grid grid-cols-3 gap-5 my-5">
-        <InfoContainer title={'Total Uploads'} quantity={100} />
-        <InfoContainer title={'Total Reviews'} quantity={100} />
-        <InfoContainer title={'Total Users'} quantity={100} />
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="grid grid-cols-3 gap-5 my-5">
+          <InfoContainer title={'Total Uploads'} quantity={100} />
+          <InfoContainer title={'Total Reviews'} quantity={100} />
+          <InfoContainer title={'Total Users'} quantity={100} />
 
-        <LatestUploads />
-      </div>
+          {latestUploads?.map((movie) => (
+            <LatestUploads
+              key={movie._id}
+              posterUrl={movie?.poster?.url}
+              title={movie?.title}
+              handleEdit={() => handleMovieEdit(movie)}
+              handleRedirect={() => handleMovieRedirect(movie._id)}
+              handleDeleteMovie={() => handleMovieDelete(movie)}
+            />
+          ))}
+        </div>
+      )}
+      {showConfirmModal && (
+        <ConfirmModal
+          setShowConfirmModal={setShowConfirmModal}
+          handleRemove={() =>
+            handleDeleteMovie(selectedMovie?._id, progressBarRef)
+          }
+          title={'Are you sure?'}
+          subtitle={'This action will remove director permanently'}
+          loading={deleteLoading}
+        />
+      )}
     </AdminLayout>
   );
 };
