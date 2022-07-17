@@ -47,6 +47,18 @@ export const getLatestUploads = async (token) => {
   }
 };
 
+export const getLatestUploadsByUser = async (limit) => {
+  try {
+    const { data } = await client.get(
+      `/movies/latest-uploads-user?limit=${limit}`
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const uploadMovie = async (token, formData) => {
   try {
     const { data } = await client.post(`/movie/create`, formData, {
@@ -115,6 +127,16 @@ export const searchMovie = async (query) => {
   }
 };
 
+export const getSingleMovie = async (movieId) => {
+  try {
+    const { data } = await client.get(`/movies/${movieId}`);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const deleteMovie = async (token, directorId) => {
   try {
     const { data } = await client.delete(`/movie/${directorId}`, {
@@ -122,6 +144,18 @@ export const deleteMovie = async (token, directorId) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const fetchTopRatedMovies = async (type) => {
+  try {
+    const { data } = await client.get(
+      type ? `/movies/top-rated?type=${type}` : `/movies/top-rated`
+    );
     return { data };
   } catch (error) {
     const { response } = error;
