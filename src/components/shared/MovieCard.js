@@ -1,3 +1,4 @@
+import RatingStar from 'components/single-movie/RatingStar';
 import { IoStar } from 'react-icons/io5';
 import { trimTitle } from 'utils/trimTitle';
 import Tooltip from './Tooltip';
@@ -15,14 +16,15 @@ const MovieCard = ({ movie, handleClick }) => {
           {trimTitle(movie.title, 22)}
         </h1>
       </Tooltip>
-      {movie.reviews?.ratingAverage ? (
+      <RatingStar movie={movie} />
+      {/* {movie.reviews?.ratingAverage ? (
         <p className="flex items-center space-x-1 text-highlight dark:text-highlight-dark">
           <span>{movie.reviews?.ratingAverage}</span>
           <IoStar />
         </p>
       ) : (
         <p className="text-highlight dark:text-highlight-dark">No Reviews</p>
-      )}
+      )} */}
     </div>
   );
 };

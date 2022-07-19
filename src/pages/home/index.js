@@ -1,6 +1,6 @@
 import { fetchTopRatedMovies, getLatestUploadsByUser } from 'api/movie';
 import HeroSliderShow from 'components/home/home-page-components/HeroSliderShow';
-import HomePageMoviesList from 'components/home/home-page-components/HomePageMoviesList';
+import MoviesList from 'components/shared/MoviesList';
 import NotVerified from 'components/home/NotVerified';
 import Container from 'components/shared/Container';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
@@ -94,15 +94,15 @@ const Home = () => {
               setSlide={setSlide}
             />
             <div className="space-y-3 py-8">
-              <HomePageMoviesList
+              <MoviesList
                 moviesList={topRatedMoviesList}
                 header={'Viewer Choice (Movies)'}
               />
-              <HomePageMoviesList
+              <MoviesList
                 moviesList={topRatedWebSeries}
                 header={'Viewer Choice (Web Series)'}
               />
-              <HomePageMoviesList
+              <MoviesList
                 moviesList={topRatedTVSeries}
                 header={'Viewer Choice (TV Series)'}
               />

@@ -2,7 +2,7 @@ import GridContainer from 'components/shared/GridContainer';
 import MovieCard from 'components/shared/MovieCard';
 import { useNavigate } from 'react-router-dom';
 
-const HomePageMoviesList = ({ header, moviesList }) => {
+const MoviesList = ({ header, moviesList }) => {
   const navigate = useNavigate();
 
   const handleRedirect = (movieId) => {
@@ -26,4 +26,4 @@ const HomePageMoviesList = ({ header, moviesList }) => {
   );
 };
 
-export default HomePageMoviesList;
+export default MoviesList;

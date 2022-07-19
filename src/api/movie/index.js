@@ -162,3 +162,13 @@ export const fetchTopRatedMovies = async (type) => {
     return { err: response?.data };
   }
 };
+
+export const getRelatedMovies = async (movieId) => {
+  try {
+    const { data } = await client.get(`/movies/related-by-tag/${movieId}`);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

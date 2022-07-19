@@ -17,6 +17,9 @@ const LoadingSpinner = () => {
           fill="currentFill"
         />
       </svg>
+      <p className="text-light-subtle dark:text-dark-subtle animate-pulse">
+        Please wait ...{' '}
+      </p>
     </div>
   );
 };
