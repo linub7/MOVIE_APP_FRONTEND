@@ -4,7 +4,7 @@ import {
 } from 'react-icons/io5';
 
 const SliderBackForward = ({ handleClickBack, handleClickForward }) => {
-  const btnClass = `rounded dark:text-white text-secondary  text-xl p-2`;
+  const btnClass = `rounded dark:hover:text-yellow-400 hover:text-cyan-400 text-xl p-2 hover:scale-125 transition`;
   return (
     <div className="absolute top-1/2 -translate-y-1/2 w-full flex items-center justify-between px-2">
       <button onClick={handleClickBack} className={btnClass} type="button">

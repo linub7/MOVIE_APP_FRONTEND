@@ -15,8 +15,6 @@ const Home = () => {
   const [topRatedTVSeries, setTopRatedTVSeries] = useState([]);
   const [slide, setSlide] = useState({});
 
-  console.log(latestMovies);
-
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -75,34 +73,40 @@ const Home = () => {
     }
 
     setLatestMovies([...data]);
+    setSlide(data[0]);
     setLoading(false);
   };
 
   return (
     <div className="dark:bg-primary bg-white min-h-screen">
-      <Container>
+      <Container className="px-2 xl:p-0">
         {auth?.token !== '' && !auth?.user?.isVerified && (
           <NotVerified auth={auth} />
         )}
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <div className="space-y-4">
+          <div>
             {/* Slider */}
-            <HeroSliderShow slide={slide} />
-            {/* Most rated Movies */}
-            <HomePageMoviesList
-              moviesList={topRatedMoviesList}
-              header={'Viewer Choice (Movies)'}
+            <HeroSliderShow
+              slide={slide}
+              latestMovies={latestMovies}
+              setSlide={setSlide}
             />
-            <HomePageMoviesList
-              moviesList={topRatedWebSeries}
-              header={'Viewer Choice (Web Series)'}
-            />
-            <HomePageMoviesList
-              moviesList={topRatedTVSeries}
-              header={'Viewer Choice (TV Series)'}
-            />
+            <div className="space-y-3 py-8">
+              <HomePageMoviesList
+                moviesList={topRatedMoviesList}
+                header={'Viewer Choice (Movies)'}
+              />
+              <HomePageMoviesList
+                moviesList={topRatedWebSeries}
+                header={'Viewer Choice (Web Series)'}
+              />
+              <HomePageMoviesList
+                moviesList={topRatedTVSeries}
+                header={'Viewer Choice (TV Series)'}
+              />
+            </div>
           </div>
         )}
       </Container>
