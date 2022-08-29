@@ -75,3 +75,13 @@ export const searchActor = async (query) => {
     return { err: response?.data };
   }
 };
+
+export const getSingleActor = async (actorId) => {
+  try {
+    const { data } = await client.get(`/actors/${actorId}`);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

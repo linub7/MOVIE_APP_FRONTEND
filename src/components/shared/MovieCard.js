@@ -4,7 +4,6 @@ import { trimTitle } from 'utils/trimTitle';
 import Tooltip from './Tooltip';
 
 const MovieCard = ({ movie, handleClick }) => {
-  console.log(movie);
   return (
     <div onClick={handleClick} className="cursor-pointer">
       <img

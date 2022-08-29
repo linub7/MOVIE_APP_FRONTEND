@@ -1,4 +1,8 @@
-const CastComponent = ({ cast }) => {
+const CastComponent = ({ cast, setViewProfileModal, setSelectedProfile }) => {
+  const handleClickCast = (profile) => {
+    setViewProfileModal(true);
+    setSelectedProfile(profile);
+  };
   return (
     // grid grid-cols-10  ml-2 space-x-5
     <div className="flex flex-wrap space-x-4 space-y-3 text-center">
@@ -13,7 +17,10 @@ const CastComponent = ({ cast }) => {
             alt={el.profile?.name}
           />
 
-          <p className="dark:text-highlight-dark text-xs md:text-sm lg:text-base text-highlight hover:underline">
+          <p
+            onClick={() => handleClickCast(el?.profile)}
+            className="dark:text-highlight-dark text-xs md:text-sm lg:text-base text-highlight hover:underline"
+          >
             {el.profile?.name}
           </p>
           <p className="text-light-subtle hidden md:inline-grid dark:text-dark-subtle hover:underline">

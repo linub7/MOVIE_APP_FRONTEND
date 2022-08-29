@@ -15,6 +15,7 @@ import AddRatingModal from 'components/single-movie/modals/AddRatingModal';
 import toast from 'react-hot-toast';
 import { addRatingValidation } from 'utils/addRatingValidation';
 import { useAuth } from 'hooks';
+import ActorProfileComponent from 'components/shared/ActorProfileComponent';
 
 const SingleMovie = () => {
   const { movieId } = useParams();
@@ -23,6 +24,8 @@ const SingleMovie = () => {
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [forceRenderPage, setForceRenderPage] = useState(false);
+  const [viewProfileModal, setViewProfileModal] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState({});
 
   const [submitLoading, setSubmitLoading] = useState(false);
   const [content, setContent] = useState('');
@@ -30,8 +33,6 @@ const SingleMovie = () => {
   const [validationError, setValidationError] = useState('');
 
   const { auth } = useAuth();
-
-  console.log(movie);
 
   useEffect(() => {
     handleGetSingleMovie();
@@ -106,6 +107,11 @@ const SingleMovie = () => {
       setShowRatingModal(false);
       setForceRenderPage(!forceRenderPage);
     }, 1500);
+  };
+
+  const handleSelectProfile = (profile) => {
+    setViewProfileModal(true);
+    setSelectedProfile(profile);
   };
 
   return (
@@ -185,6 +191,7 @@ const SingleMovie = () => {
                       name={el?.profile?.name}
                       key={el._id}
                       leadActor={el?.leadActor}
+                      handleClick={() => handleSelectProfile(el?.profile)}
                     />
                   ))}
                 </div>
@@ -215,7 +222,11 @@ const SingleMovie = () => {
               </div>
 
               <DWCLabel label={'Casts Images'} className="text-2xl mt-3" />
-              <CastComponent cast={movie?.cast} />
+              <CastComponent
+                cast={movie?.cast}
+                setViewProfileModal={setViewProfileModal}
+                setSelectedProfile={setSelectedProfile}
+              />
 
               {/* Related Movies */}
               {relatedMovies.length > 0 ? (
@@ -236,6 +247,13 @@ const SingleMovie = () => {
           validationError={validationError}
           setRate={setRate}
           setContent={setContent}
+        />
+      )}
+
+      {viewProfileModal && (
+        <ActorProfileComponent
+          selectedProfile={selectedProfile}
+          setViewProfileModal={setViewProfileModal}
         />
       )}
     </div>
