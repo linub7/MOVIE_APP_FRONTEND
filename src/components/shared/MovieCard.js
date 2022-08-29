@@ -1,4 +1,4 @@
-import RatingStar from 'components/single-movie/RatingStar';
+import RatingStar from 'components/single-movie/rating/RatingStar';
 import { IoStar } from 'react-icons/io5';
 import { trimTitle } from 'utils/trimTitle';
 import Tooltip from './Tooltip';

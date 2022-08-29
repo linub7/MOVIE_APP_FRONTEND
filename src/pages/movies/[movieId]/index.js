@@ -1,22 +1,37 @@
-import { getRelatedMovies, getSingleMovie } from 'api/movie';
+import { addReview, getRelatedMovies, getSingleMovie } from 'api/movie';
 import MoviesList from 'components/shared/MoviesList';
 import Container from 'components/shared/Container';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
 import CastComponent from 'components/single-movie/CastComponent';
 import DWCLabel from 'components/single-movie/DWCLabel';
 import DWCResult from 'components/single-movie/DWCResult';
-import RateButton from 'components/single-movie/RateButton';
-import RatingStar from 'components/single-movie/RatingStar';
+import RateButton from 'components/single-movie/rating/RateButton';
+import RatingStar from 'components/single-movie/rating/RatingStar';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { convertDate } from 'utils/convertDate';
 import { convertReviewCount } from 'utils/convertReviewCount';
+import AddRatingModal from 'components/single-movie/modals/AddRatingModal';
+import toast from 'react-hot-toast';
+import { addRatingValidation } from 'utils/addRatingValidation';
+import { useAuth } from 'hooks';
 
 const SingleMovie = () => {
   const { movieId } = useParams();
   const [loading, setLoading] = useState(true);
   const [movie, setMovie] = useState({});
   const [relatedMovies, setRelatedMovies] = useState([]);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [forceRenderPage, setForceRenderPage] = useState(false);
+
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [content, setContent] = useState('');
+  const [rate, setRate] = useState(0);
+  const [validationError, setValidationError] = useState('');
+
+  const { auth } = useAuth();
+
+  console.log(movie);
 
   useEffect(() => {
     handleGetSingleMovie();
@@ -26,10 +41,7 @@ const SingleMovie = () => {
       setMovie({});
       setRelatedMovies([]);
     };
-  }, [movieId]);
-
-  console.log(movie);
-  console.log('related', relatedMovies);
+  }, [movieId, forceRenderPage]);
 
   const handleGetSingleMovie = async () => {
     const { data, err } = await getSingleMovie(movieId);
@@ -55,9 +67,50 @@ const SingleMovie = () => {
     setLoading(false);
   };
 
+  const handleClickRatingButton = () => {
+    setShowRatingModal(true);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitLoading(true);
+    const { ok, error: validateError } = addRatingValidation({ rate, content });
+
+    if (!ok) {
+      setSubmitLoading(false);
+      setValidationError(validateError);
+      setTimeout(() => {
+        setValidationError('');
+      }, 2000);
+      return toast.error(validateError);
+    }
+
+    console.log({ rating: rate, content });
+
+    const { err, data } = await addReview({
+      parentMovie: movie._id,
+      rating: rate,
+      content,
+      token: auth?.token,
+    });
+
+    if (err) {
+      setSubmitLoading(false);
+      setShowRatingModal(false);
+      return toast.error(err.error);
+    }
+
+    setSubmitLoading(false);
+    toast.success('Rating added successfully');
+    setTimeout(() => {
+      setShowRatingModal(false);
+      setForceRenderPage(!forceRenderPage);
+    }, 1500);
+  };
+
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
-      <Container>
+      <Container className="px-2 xl:px-0">
         {loading ? (
           <LoadingSpinner />
         ) : (
@@ -69,14 +122,21 @@ const SingleMovie = () => {
               src={movie?.trailer?.url}
             ></video>
             <div className="flex justify-between items-center m-2">
-              <h1 className="text-4xl text-highlight dark:text-highlight-dark font-semibold py-3">
+              <h1 className="text-2xl md:text-4xl text-highlight dark:text-highlight-dark font-semibold py-3">
                 {movie?.title}
               </h1>
               <div className="flex flex-col items-end">
-                <RatingStar movie={movie} />
+                <RatingStar
+                  handleClickButton={handleClickRatingButton}
+                  movie={movie}
+                />
                 <Link
-                  className="text-highlight dark:text-highlight-dark hover:underline transition"
-                  to={`/movies/${movie?._id}/reviews`}
+                  className="text-sm md:text-base text-highlight dark:text-highlight-dark hover:underline transition"
+                  to={
+                    movie?.reviews?.reviewCount > 0
+                      ? `/movies/${movie?._id}/reviews`
+                      : ''
+                  }
                 >
                   {movie?.reviews && movie?.reviews['reviewCount']
                     ? `${convertReviewCount(
@@ -85,11 +145,14 @@ const SingleMovie = () => {
                     : `No Reviews`}
                 </Link>
 
-                <RateButton btnTitle={'Rate This Movie'} />
+                <RateButton
+                  btnTitle={'Rate This Movie'}
+                  handleClickButton={handleClickRatingButton}
+                />
               </div>
             </div>
             <div className="space-y-3">
-              <p className="text-light-subtle dark:text-dark-subtle">
+              <p className="text-sm md:text-base text-light-subtle dark:text-dark-subtle">
                 {movie?.storyLine}
               </p>
               <div className="flex space-x-2">
@@ -121,6 +184,7 @@ const SingleMovie = () => {
                       avatar={el?.profile?.avatar}
                       name={el?.profile?.name}
                       key={el._id}
+                      leadActor={el?.leadActor}
                     />
                   ))}
                 </div>
@@ -164,6 +228,16 @@ const SingleMovie = () => {
           </>
         )}
       </Container>
+      {showRatingModal && (
+        <AddRatingModal
+          setShowRatingModal={setShowRatingModal}
+          loading={submitLoading}
+          onSubmit={onSubmit}
+          validationError={validationError}
+          setRate={setRate}
+          setContent={setContent}
+        />
+      )}
     </div>
   );
 };

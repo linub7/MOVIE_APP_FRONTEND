@@ -1,18 +1,22 @@
 const CastComponent = ({ cast }) => {
   return (
-    <div className="grid grid-cols-10 gap-3">
+    // grid grid-cols-10  ml-2 space-x-5
+    <div className="flex flex-wrap space-x-4 space-y-3 text-center">
       {cast?.map((el) => (
-        <div key={el._id} className="flex flex-col items-center cursor-pointer">
+        <div
+          key={el._id}
+          className="basis-28 flex flex-col items-center cursor-pointer"
+        >
           <img
-            className="w-24 h-24 aspect-square object-cover rounded-full"
+            className="h-24 w-24 aspect-square object-cover rounded-full"
             src={el.profile?.avatar}
             alt={el.profile?.name}
           />
 
-          <p className="dark:text-highlight-dark text-highlight hover:underline">
+          <p className="dark:text-highlight-dark text-xs md:text-sm lg:text-base text-highlight hover:underline">
             {el.profile?.name}
           </p>
-          <p className="text-light-subtle dark:text-dark-subtle hover:underline">
+          <p className="text-light-subtle hidden md:inline-grid dark:text-dark-subtle hover:underline">
             <span className="italic text-primary dark:text-white text-sm">
               as
             </span>{' '}

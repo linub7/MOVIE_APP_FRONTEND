@@ -22,6 +22,7 @@ import AdminDirectors from 'pages/admin/directors';
 import AdminEditMovie from 'pages/admin/movies/edit/[movieId]';
 import AdminSingleMovie from 'pages/admin/movies/[movieId]';
 import SingleMovie from 'pages/movies/[movieId]';
+import SingleMovieReviewsPage from 'pages/movies/[movieId]/reviews';
 
 function App() {
   const [toggleModal, setToggleModal] = useState(false);
@@ -45,6 +46,10 @@ function App() {
         <Route element={<LoggedInRoutes />}>
           <Route path="/protected" element={<Protected />} />
           <Route path="/movies/:movieId" element={<SingleMovie />} />
+          <Route
+            path="/movies/:movieId/reviews"
+            element={<SingleMovieReviewsPage />}
+          />
         </Route>
         <Route element={<OnlyAdminRoutes />}>
           <Route

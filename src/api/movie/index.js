@@ -172,3 +172,39 @@ export const getRelatedMovies = async (movieId) => {
     return { err: response?.data };
   }
 };
+
+export const addReview = async ({ parentMovie, content, rating, token }) => {
+  try {
+    const { data } = await client.post(
+      `/reviews/add`,
+      {
+        parentMovie,
+        content,
+        rating,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const getSingleMovieReviews = async ({ movieId, token }) => {
+  try {
+    const { data } = await client.get(`/reviews-by-user/${movieId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

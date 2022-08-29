@@ -10,6 +10,7 @@ import SearchDirectorProvider from 'context/SearchDirectorProvider';
 import SearchCastProvider from 'context/SearchCastProvider';
 import SearchWritersProvider from 'context/SearchWritersProvider';
 import MoviesProvider from 'context/MoviesProvider';
+import ScrollToTop from 'scroll/ScrollToTop';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,6 +22,7 @@ root.render(
             <ThemeProvider>
               <AuthProvider>
                 <MoviesProvider>
+                  <ScrollToTop />
                   <App />
                 </MoviesProvider>
               </AuthProvider>
