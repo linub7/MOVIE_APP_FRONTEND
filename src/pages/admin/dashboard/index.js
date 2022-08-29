@@ -13,6 +13,7 @@ import { useAuth, useMovies } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { getPoster } from 'utils/getPoster';
 
 const AdminDashboard = ({
   toggleModal,
@@ -134,7 +135,9 @@ const AdminDashboard = ({
           {latestUploads?.map((movie) => (
             <LatestUploads
               key={movie._id}
-              posterUrl={movie?.poster?.url}
+              posterUrl={
+                getPoster(movie?.poster?.responsive) || movie?.poster?.url
+              }
               title={movie?.title}
               handleEdit={() => handleMovieEdit(movie)}
               handleRedirect={() => handleMovieRedirect(movie._id)}
