@@ -6,7 +6,7 @@ const ToggleThemeButton = ({ toggleTheme }) => {
       className="dark:bg-white bg-dark-subtle p-1 rounded"
       onClick={toggleTheme}
     >
-      <IoSunnySharp className="text-secondary" size={24} />
+      <IoSunnySharp className="text-secondary h-5 w-5" />
     </button>
   );
 };

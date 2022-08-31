@@ -21,7 +21,7 @@ const AdminNavbar = ({ toggleModal, setToggleModal }) => {
   const showAppSearchForm = pathname === '/admin/dashboard';
 
   return (
-    <div className="flex items-center justify-between relative p-5">
+    <div className="flex items-center justify-between relative p-1 md:p-5">
       {showAppSearchForm ? (
         <AppSearchForm placeholder={'Search Movies...'} />
       ) : (
@@ -32,7 +32,7 @@ const AdminNavbar = ({ toggleModal, setToggleModal }) => {
         {pathname === '/admin/dashboard' && (
           <button
             onClick={() => setToggleModal(!toggleModal)}
-            className="flex items-center space-x-2 dark:border-dark-subtle border-secondary hover:border-primary dark:text-white text-secondary hover:text-cyan-400 dark:hover:text-yellow-400 transition font-semibold border-2 rounded text-lg px-3 py-1"
+            className="flex items-center space-x-2 dark:border-dark-subtle border-secondary hover:border-primary dark:text-white text-secondary hover:text-cyan-400 dark:hover:text-yellow-400 transition font-semibold border-2 rounded text-base md:text-lg px-2 py-0.5 md:px-3 md:py-1"
           >
             <span>Create</span>
             <IoAddSharp />

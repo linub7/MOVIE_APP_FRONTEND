@@ -21,12 +21,16 @@ const AdminDashboardComponent = () => {
     navigate('/');
   };
   return (
-    <nav className="w-48 min-h-screen bg-secondary border-r border-gray-300">
-      <div className="flex flex-col justify-between pl-5 space-y-2 sticky top-0 h-screen">
+    <nav className="w-28 md:w-48 min-h-screen bg-secondary border-r border-gray-300">
+      <div className="flex flex-col justify-between pl-1 md:pl-5 space-y-2 sticky top-0 h-screen">
         <ul>
           <li>
             <Link to={'/'}>
-              <img src="/lgo.png" alt="logo" className="h-14 p-2" />
+              <img
+                src="/lgo.png"
+                alt="logo"
+                className="h-8 md:h-14 p-1 md:p-2"
+              />
             </Link>
           </li>
 
@@ -95,7 +99,7 @@ const AdminDashboardComponent = () => {
 
 const NavItem = ({ path, children, isActive }) => {
   const commonClass =
-    'flex items-center space-x-2 p-2 font-semibold text-lg hover:text-yellow-400';
+    'flex items-center space-x-2 p-1 md:p-2 font-semibold text-base md:text-lg hover:text-yellow-400';
   return (
     <NavLink
       // className={({ isActive }) => (isActive ? 'text-white' : 'text-gray-400')}

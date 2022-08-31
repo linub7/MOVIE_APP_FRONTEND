@@ -10,7 +10,7 @@ const AppSearchForm = ({
     <form onSubmit={handleSubmitSearch} className="relative">
       <input
         type="text"
-        className="border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary dark:text-white transition bg-transparent rounded text-lg p-1 outline-none"
+        className="border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary dark:text-white transition bg-transparent rounded text-base md:text-lg px-2 py-0.5 md:px-3 md:py-1 outline-none"
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}

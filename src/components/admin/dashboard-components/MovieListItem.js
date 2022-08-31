@@ -19,7 +19,7 @@ const MovieListItem = ({
             </div>
           </td>
 
-          <td className="w-full pl-5">
+          <td className="w-full pl-2 md:pl-5">
             <div>
               <h1 className="font-semibold text-base md:text-lg text-primary dark:text-white">
                 {title}

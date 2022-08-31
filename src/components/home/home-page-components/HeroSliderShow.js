@@ -74,7 +74,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
   };
   return (
     <div className="w-full flex gap-3">
-      <div className="w-4/5 aspect-video relative overflow-hidden">
+      <div className="w-full md:w-4/5 aspect-video relative overflow-hidden">
         <div className="w-full cursor-pointer">
           <img
             onAnimationEnd={handleAnimationEnd}
@@ -101,7 +101,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
           handleClickForward={handleClickForward}
         />
       </div>
-      <div className="w-1/5 space-y-3 px-3">
+      <div className="hidden md:block md:w-1/5 space-y-3 px-3">
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>

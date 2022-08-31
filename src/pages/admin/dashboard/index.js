@@ -159,7 +159,7 @@ const AdminDashboard = ({
           />
           <InfoContainer title={'Total Users'} quantity={totalUserQuantity} />
 
-          <div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded col-span-2">
+          <div className="bg-white shadow dark:shadow dark:bg-secondary p-1 md:p-5 rounded col-span-2">
             <MoviesListTitle title={'Latest Uploads'} />
             {latestUploads?.map((movie) => (
               <LatestUploads
@@ -175,7 +175,7 @@ const AdminDashboard = ({
             ))}
           </div>
 
-          <div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded col-span-1 space-y-3">
+          <div className="bg-white shadow dark:shadow dark:bg-secondary p-1 md:p-5 rounded col-span-1 space-y-3">
             <MoviesListTitle title={'Most Rated'} />
             {mostRatedMovies?.map((movie) => (
               <MostRatedMovies key={movie._id} movie={movie} />
