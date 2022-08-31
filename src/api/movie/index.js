@@ -208,3 +208,17 @@ export const getSingleMovieReviews = async ({ movieId, token }) => {
     return { err: response?.data };
   }
 };
+
+export const deleteReview = async (token, reviewId) => {
+  try {
+    const { data } = await client.delete(`/reviews/${reviewId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

@@ -1,6 +1,3 @@
-import { createActor } from 'api/actor';
-import { useAuth } from 'hooks';
-import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BounceLoader } from 'react-spinners';
 import { genderOptions } from 'utils/selectorOptions';
