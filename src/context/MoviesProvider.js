@@ -2,6 +2,7 @@ import {
   deleteMovie,
   getAppInformation,
   getLatestUploads,
+  getMostRatedMovies,
   getMovies,
 } from 'api/movie';
 import { PAGINATION_LIMIT } from 'constants';
@@ -24,6 +25,7 @@ export default function MoviesProvider({ children }) {
   const [totalMoviesQuantity, setTotalMoviesQuantity] = useState(0);
   const [totalReviewsQuantity, setTotalReviewsQuantity] = useState(0);
   const [totalUserQuantity, setTotalUserQuantity] = useState(0);
+  const [mostRatedMovies, setMostRatedMovies] = useState([]);
 
   const { auth } = useAuth();
   const cookieAuth = Cookies.get('auth')
@@ -73,6 +75,17 @@ export default function MoviesProvider({ children }) {
     setLoading(false);
   };
 
+  const handleGetMostRatedMovies = async () => {
+    setLoading(true);
+    const { data, err } = await getMostRatedMovies(cookieAuth?.token);
+    if (err) {
+      setLoading(false);
+      return console.log(err);
+    }
+    setMostRatedMovies(data);
+    setLoading(false);
+  };
+
   const handleDeleteMovie = async (movieId, progressBarRef) => {
     setDeleteLoading(true);
     progressBarRef.current.continuousStart();
@@ -118,6 +131,9 @@ export default function MoviesProvider({ children }) {
         setTotalMoviesQuantity,
         setTotalReviewsQuantity,
         setTotalUserQuantity,
+        mostRatedMovies,
+        setMostRatedMovies,
+        handleGetMostRatedMovies,
       }}
     >
       {children}

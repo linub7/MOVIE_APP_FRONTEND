@@ -1,6 +1,9 @@
 import { uploadTrailer } from 'api/movie';
 import InfoContainer from 'components/admin/dashboard-components/AppInfoBox';
 import LatestUploads from 'components/admin/dashboard-components/LatestUploads';
+import MostRatedMovies from 'components/admin/dashboard-components/MostRatedMovies';
+import MovieListItem from 'components/admin/dashboard-components/MovieListItem';
+import MoviesListTitle from 'components/admin/dashboard-components/MoviesListTitle';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddActorModal from 'components/admin/modals/AddActorModal';
 import AddDirectorModal from 'components/admin/modals/AddDirectorModal';
@@ -51,13 +54,20 @@ const AdminDashboard = ({
     setTotalMoviesQuantity,
     setTotalReviewsQuantity,
     setTotalUserQuantity,
+    mostRatedMovies,
+    setMostRatedMovies,
+    handleGetMostRatedMovies,
   } = useMovies();
+
+  console.log(mostRatedMovies);
 
   useEffect(() => {
     handleGetLatestUploads();
+    handleGetMostRatedMovies();
     handleGetAppInformation();
     return () => {
       setLatestUploads([]);
+      setMostRatedMovies([]);
       setTotalUserQuantity(0);
       setTotalMoviesQuantity(0);
       setTotalReviewsQuantity(0);
@@ -149,18 +159,28 @@ const AdminDashboard = ({
           />
           <InfoContainer title={'Total Users'} quantity={totalUserQuantity} />
 
-          {latestUploads?.map((movie) => (
-            <LatestUploads
-              key={movie._id}
-              posterUrl={
-                getPoster(movie?.poster?.responsive) || movie?.poster?.url
-              }
-              title={movie?.title}
-              handleEdit={() => handleMovieEdit(movie)}
-              handleRedirect={() => handleMovieRedirect(movie._id)}
-              handleDeleteMovie={() => handleMovieDelete(movie)}
-            />
-          ))}
+          <div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded col-span-2">
+            <MoviesListTitle title={'Latest Uploads'} />
+            {latestUploads?.map((movie) => (
+              <LatestUploads
+                key={movie._id}
+                posterUrl={
+                  getPoster(movie?.poster?.responsive) || movie?.poster?.url
+                }
+                title={movie?.title}
+                handleEdit={() => handleMovieEdit(movie)}
+                handleRedirect={() => handleMovieRedirect(movie._id)}
+                handleDeleteMovie={() => handleMovieDelete(movie)}
+              />
+            ))}
+          </div>
+
+          <div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded col-span-1 space-y-3">
+            <MoviesListTitle title={'Most Rated'} />
+            {mostRatedMovies?.map((movie) => (
+              <MostRatedMovies key={movie._id} movie={movie} />
+            ))}
+          </div>
         </div>
       )}
       {showConfirmModal && (

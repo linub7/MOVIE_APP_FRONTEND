@@ -254,3 +254,17 @@ export const getAppInformation = async (token) => {
     return { err: response?.data };
   }
 };
+
+export const getMostRatedMovies = async (token) => {
+  try {
+    const { data } = await client.get(`/most-rated`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

@@ -14,14 +14,14 @@ const MovieListItem = ({
       <tbody>
         <tr>
           <td>
-            <div className="w-24">
+            <div className="hidden md:block w-24">
               <img className="w-full aspect-video" src={poster} alt={title} />
             </div>
           </td>
 
           <td className="w-full pl-5">
             <div>
-              <h1 className="font-semibold text-lg text-primary dark:text-white">
+              <h1 className="font-semibold text-base md:text-lg text-primary dark:text-white">
                 {title}
               </h1>
               <div className="space-x-1">
