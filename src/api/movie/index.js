@@ -222,3 +222,21 @@ export const deleteReview = async (token, reviewId) => {
     return { err: response?.data };
   }
 };
+
+export const updateReview = async (token, reviewId, rating, content) => {
+  try {
+    const { data } = await client.patch(
+      `/reviews/${reviewId}`,
+      { rating, content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

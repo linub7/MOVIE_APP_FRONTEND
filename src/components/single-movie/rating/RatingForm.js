@@ -12,6 +12,7 @@ const RatingForm = ({
   loading,
   onSubmit,
   validationError,
+  value,
 }) => {
   return (
     <div className="dark:bg-primary bg-white rounded w-[22rem] h-[16rem] overflow-auto relative scrollbar p-2">
@@ -47,6 +48,7 @@ const RatingForm = ({
         <textarea
           onChange={(e) => setContent(e.target.value)}
           className="w-full h-24 border-2 p-2 dark:text-white text-primary outline-none bg-transparent resize-none"
+          value={value && value}
         ></textarea>
         <Submit
           loading={loading}

@@ -1,6 +1,7 @@
-import { deleteReview, getSingleMovieReviews } from 'api/movie';
+import { deleteReview, getSingleMovieReviews, updateReview } from 'api/movie';
 import Container from 'components/shared/Container';
 import LoadingSpinner from 'components/shared/LoadingSpinner';
+import EditRatingModal from 'components/single-movie/modals/EditRatingModal';
 import WarningDeleteReviewModal from 'components/single-movie/modals/WarningDeleteReviewModal';
 import ReviewCard from 'components/single-movie/reviews-page/ReviewCard';
 import { useAuth } from 'hooks';
@@ -15,6 +16,9 @@ const SingleMovieReviewsPage = () => {
   const [profileOwnerReview, setProfileOwnerReview] = useState(null);
   const [selectedReview, setSelectedReview] = useState(null);
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [rate, setRate] = useState(0);
+  const [content, setContent] = useState('');
   const [movieName, setMovieName] = useState('');
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -57,6 +61,16 @@ const SingleMovieReviewsPage = () => {
 
   const handleViewAllReview = () => setProfileOwnerReview(null);
 
+  const handleShowEditModal = () => {
+    const myReview = reviews?.find(
+      (review) => review?.owner?._id === auth?.user?._id
+    );
+    myReview && setSelectedReview(myReview);
+    myReview && setRate(myReview?.rating);
+    myReview && setContent(myReview?.content);
+    setShowEditModal(true);
+  };
+
   const handleShowWarningModal = () => {
     const myReview = reviews?.find(
       (review) => review?.owner?._id === auth?.user?._id
@@ -81,6 +95,32 @@ const SingleMovieReviewsPage = () => {
     setDeleteLoading(false);
     data?.reviewsCount === 0 && navigate(-1);
   };
+
+  const handleEditReview = async () => {
+    setDeleteLoading(true);
+    const rating = rate;
+
+    const { err, data } = await updateReview(
+      auth?.token,
+      selectedReview?._id,
+      rating,
+      content
+    );
+
+    if (err) {
+      console.log(err);
+      toast.error(err?.error);
+      setDeleteLoading(false);
+      return;
+    }
+    console.log({ data });
+    toast.success(data?.message);
+    setReviews(data?.reviews);
+    setShowEditModal(false);
+    setDeleteLoading(false);
+  };
+
+  console.log({ reviews });
 
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
@@ -120,7 +160,7 @@ const SingleMovieReviewsPage = () => {
                     ownerId={auth?.user?._id}
                     review={review}
                     handleDelete={handleShowWarningModal}
-                    handleEdit={() => console.log(`edit ${profileOwnerReview}`)}
+                    handleEdit={handleShowEditModal}
                   />
                 ))}
               </div>
@@ -130,7 +170,7 @@ const SingleMovieReviewsPage = () => {
                   review={profileOwnerReview}
                   ownerId={auth?.user?._id}
                   handleDelete={handleShowWarningModal}
-                  handleEdit={() => console.log(`edit ${profileOwnerReview}`)}
+                  handleEdit={handleShowEditModal}
                 />
               </div>
             )}
@@ -142,6 +182,17 @@ const SingleMovieReviewsPage = () => {
           setShowWarningModal={setShowWarningModal}
           handleDeleteReview={handleDeleteReview}
           deleteLoading={deleteLoading}
+        />
+      )}
+      {showEditModal && (
+        <EditRatingModal
+          setShowRatingModal={setShowEditModal}
+          loading={deleteLoading}
+          onSubmit={handleEditReview}
+          setContent={setContent}
+          setRate={setRate}
+          rate={rate}
+          content={content}
         />
       )}
     </div>
