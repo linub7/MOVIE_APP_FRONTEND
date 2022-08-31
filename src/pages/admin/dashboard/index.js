@@ -44,12 +44,23 @@ const AdminDashboard = ({
     showConfirmModal,
     setShowConfirmModal,
     handleDeleteMovie,
+    totalMoviesQuantity,
+    totalReviewsQuantity,
+    totalUserQuantity,
+    handleGetAppInformation,
+    setTotalMoviesQuantity,
+    setTotalReviewsQuantity,
+    setTotalUserQuantity,
   } = useMovies();
 
   useEffect(() => {
     handleGetLatestUploads();
+    handleGetAppInformation();
     return () => {
       setLatestUploads([]);
+      setTotalUserQuantity(0);
+      setTotalMoviesQuantity(0);
+      setTotalReviewsQuantity(0);
     };
   }, [auth?.token, deleteLoading]);
 
@@ -128,9 +139,15 @@ const AdminDashboard = ({
         <LoadingSpinner />
       ) : (
         <div className="grid grid-cols-3 gap-5 my-5">
-          <InfoContainer title={'Total Uploads'} quantity={100} />
-          <InfoContainer title={'Total Reviews'} quantity={100} />
-          <InfoContainer title={'Total Users'} quantity={100} />
+          <InfoContainer
+            title={'Total Uploads'}
+            quantity={totalMoviesQuantity}
+          />
+          <InfoContainer
+            title={'Total Reviews'}
+            quantity={totalReviewsQuantity}
+          />
+          <InfoContainer title={'Total Users'} quantity={totalUserQuantity} />
 
           {latestUploads?.map((movie) => (
             <LatestUploads
