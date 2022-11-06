@@ -1,4 +1,5 @@
 import { fetchTopRatedMovies, getLatestUploadsByUser } from 'api/movie';
+import Slider from 'components/home/home-page-components/slider';
 import HeroSliderShow from 'components/home/home-page-components/HeroSliderShow';
 import MoviesList from 'components/shared/MoviesList';
 import NotVerified from 'components/home/NotVerified';
@@ -88,11 +89,12 @@ const Home = () => {
         ) : (
           <div>
             {/* Slider */}
-            <HeroSliderShow
+            {/* <HeroSliderShow
               slide={slide}
               latestMovies={latestMovies}
               setSlide={setSlide}
-            />
+            /> */}
+            <Slider images={latestMovies} />
             <div className="space-y-3 py-8">
               <MoviesList
                 moviesList={topRatedMoviesList}

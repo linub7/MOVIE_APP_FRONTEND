@@ -4,6 +4,7 @@ import SliderBackForward from './SliderBackForward';
 
 let count = 0;
 let intervalId;
+
 const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
   const [cloneSlide, setCloneSlide] = useState({});
   const [upNext, setUpNext] = useState([]);
@@ -72,6 +73,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
     slideRef.current.classList.remove(...classes);
     setCloneSlide({});
   };
+
   return (
     <div className="w-full flex gap-3">
       <div className="w-full md:w-4/5 aspect-video relative overflow-hidden">
@@ -84,7 +86,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
             alt="poster"
           />
           <div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-white via-transparent dark:from-primary dark:via-transparent">
-            <h1 className="font-semibold text-4xl dark:text-highlight-dark text-highlight">
+            <h1 className="font-semibold text-3xl md:text-4xl dark:text-highlight-dark text-highlight">
               {slide?.title}
             </h1>
           </div>
@@ -101,7 +103,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
           handleClickForward={handleClickForward}
         />
       </div>
-      <div className="hidden md:block md:w-1/5 space-y-3 px-3">
+      <div className="hidden md:block md:w-1/5 w-full space-y-3 px-3">
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>

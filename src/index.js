@@ -14,24 +14,22 @@ import ScrollToTop from 'scroll/ScrollToTop';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <SearchDirectorProvider>
-        <SearchCastProvider>
-          <SearchWritersProvider>
-            <ThemeProvider>
-              <AuthProvider>
-                <MoviesProvider>
-                  <ScrollToTop />
-                  <App />
-                </MoviesProvider>
-              </AuthProvider>
-            </ThemeProvider>
-          </SearchWritersProvider>
-        </SearchCastProvider>
-      </SearchDirectorProvider>
-    </Router>
-  </React.StrictMode>
+  <Router>
+    <SearchDirectorProvider>
+      <SearchCastProvider>
+        <SearchWritersProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <MoviesProvider>
+                <ScrollToTop />
+                <App />
+              </MoviesProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </SearchWritersProvider>
+      </SearchCastProvider>
+    </SearchDirectorProvider>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

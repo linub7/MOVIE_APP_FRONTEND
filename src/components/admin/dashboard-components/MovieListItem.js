@@ -15,7 +15,11 @@ const MovieListItem = ({
         <tr>
           <td>
             <div className="hidden md:block w-24">
-              <img className="w-full aspect-video" src={poster} alt={title} />
+              <img
+                className="w-full aspect-video object-cover"
+                src={poster}
+                alt={title}
+              />
             </div>
           </td>
 

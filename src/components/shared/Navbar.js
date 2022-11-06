@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth, useTheme } from 'hooks';
 import Cookies from 'js-cookie';
 import ToggleThemeButton from './ToggleThemeButton';
+import AppSearchForm from 'components/admin/shared/AppSearchForm';
 
 const Navbar = () => {
   const { toggleTheme } = useTheme();
@@ -22,17 +23,19 @@ const Navbar = () => {
       <Container className={`p-2`}>
         <div className="flex items-center justify-between">
           <Link to={`/`}>
-            <img src="/lgo.png" alt="logo" className="h-10" />
+            <img src="/lgo.png" alt="logo" className="h-8  sm:h-10" />
           </Link>
           <ul className="flex items-center space-x-2">
             <li>
               <ToggleThemeButton toggleTheme={toggleTheme} />
             </li>
             <li>
-              <input
-                type="text"
-                className="border-2 border-dark-subtle p-1 rounded bg-transparent text-sm sm:text-lg md:text-xl outline-none focus:border-white transition text-white"
-                placeholder="Search..."
+              <AppSearchForm
+                placeholder={'Search Movies'}
+                inputClassStyle={
+                  'border-dark-subtle text-white focus:border-white sm:w-auto w-40'
+                }
+                iconClassStyle={'text-white focus:text-white'}
               />
             </li>
             {auth?.token ? (
