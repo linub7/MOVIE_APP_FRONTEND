@@ -1,13 +1,16 @@
 import Container from './Container';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth, useTheme } from 'hooks';
 import Cookies from 'js-cookie';
 import ToggleThemeButton from './ToggleThemeButton';
 import AppSearchForm from 'components/admin/shared/AppSearchForm';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [searchTerm, setSearchTerm] = useState('');
   const { toggleTheme } = useTheme();
   const { auth, setAuth } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     Cookies.remove('auth');
@@ -16,6 +19,15 @@ const Navbar = () => {
       token: '',
     });
     window.location.reload();
+  };
+
+  const handleResetSearch = () => setSearchTerm('');
+
+  const handleSubmitSearch = (e) => {
+    e.preventDefault();
+    if (!searchTerm || searchTerm === '') return;
+    navigate(`/movie/search`, { state: searchTerm });
+    handleResetSearch();
   };
 
   return (
@@ -36,6 +48,10 @@ const Navbar = () => {
                   'border-dark-subtle text-white focus:border-white sm:w-auto w-40'
                 }
                 iconClassStyle={'text-white focus:text-white'}
+                value={searchTerm}
+                setValue={setSearchTerm}
+                handleResetSearchResults={handleResetSearch}
+                handleSubmitSearch={handleSubmitSearch}
               />
             </li>
             {auth?.token ? (

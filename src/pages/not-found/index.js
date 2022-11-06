@@ -3,7 +3,7 @@ import NotFoundComponent from 'components/shared/NotFoundComponent';
 const NotFound = () => {
   return (
     <>
-      <NotFoundComponent />
+      <NotFoundComponent title={'Page not found'} />
     </>
   );
 };

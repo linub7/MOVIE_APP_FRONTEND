@@ -23,6 +23,7 @@ import AdminEditMovie from 'pages/admin/movies/edit/[movieId]';
 import AdminSingleMovie from 'pages/admin/movies/[movieId]';
 import SingleMovie from 'pages/movies/[movieId]';
 import SingleMovieReviewsPage from 'pages/movies/[movieId]/reviews';
+import SearchMovie from 'pages/movies/search';
 
 function App() {
   const [toggleModal, setToggleModal] = useState(false);
@@ -45,6 +46,7 @@ function App() {
         </Route>
         <Route element={<LoggedInRoutes />}>
           <Route path="/protected" element={<Protected />} />
+          <Route path="/movie/search" element={<SearchMovie />} />
           <Route path="/movies/:movieId" element={<SingleMovie />} />
           <Route
             path="/movies/:movieId/reviews"

@@ -127,6 +127,21 @@ export const searchMovie = async (query) => {
   }
 };
 
+export const searchMovieByUser = async (query) => {
+  const auth = Cookies.get('auth') ? JSON.parse(Cookies.get('auth')) : null;
+  try {
+    const { data } = await client.get(`/movies/search-by-user?title=${query}`, {
+      headers: {
+        Authorization: `Bearer ${auth?.token}`,
+      },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
 export const getSingleMovie = async (movieId) => {
   try {
     const { data } = await client.get(`/movies/${movieId}`);
