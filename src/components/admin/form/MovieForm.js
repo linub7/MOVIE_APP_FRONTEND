@@ -58,13 +58,8 @@ const MovieForm = ({
   const [loading, setLoading] = useState(false);
   const { auth } = useAuth();
 
-  const {
-    handleDirectorSearch,
-    searchingDirector,
-    searchDirectorResultsNotFound,
-    searchDirectorResults,
-    resetDirectorSearch,
-  } = useSearchDirector();
+  const { handleDirectorSearch, searchDirectorResults, resetDirectorSearch } =
+    useSearchDirector();
 
   const {
     handleWritersSearch,
@@ -188,7 +183,7 @@ const MovieForm = ({
     formData.append('tags', JSON.stringify(tags));
     formData.append('genres', JSON.stringify(genres));
 
-    const finalCasts = casts.map((cast) => {
+    const finalCasts = casts?.map((cast) => {
       return {
         actor: cast.profile.id,
         roleAs: cast.roleAs,
@@ -200,7 +195,7 @@ const MovieForm = ({
     console.log(finalCasts);
 
     if (writers.length) {
-      const finalWriters = writers.map((writer) => writer.id);
+      const finalWriters = writers?.map((writer) => writer.id);
       formData.append('writers', JSON.stringify(finalWriters));
     }
     if (director.id) formData.append('director', director.id);
@@ -211,7 +206,7 @@ const MovieForm = ({
       return toast.error('Please add a trailer');
 
     if (ok) {
-      const { data, err } = await uploadMovie(auth?.token, formData);
+      const { err } = await uploadMovie(auth?.token, formData);
       if (err) {
         setLoading(false);
         return toast.error(err);

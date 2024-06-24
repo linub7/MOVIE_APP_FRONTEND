@@ -87,7 +87,7 @@ const AdminWriters = ({
       const { data, err } = await searchWriter(writerSearchTerm);
       if (err) return console.log(err);
       setSearchResults(data);
-      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+      data === false ? setResultsNotFound(true) : setResultsNotFound(false);
     }
   };
 

@@ -88,7 +88,7 @@ const SingleMovie = () => {
 
     console.log({ rating: rate, content });
 
-    const { err, data } = await addReview({
+    const { err } = await addReview({
       parentMovie: movie._id,
       rating: rate,
       content,

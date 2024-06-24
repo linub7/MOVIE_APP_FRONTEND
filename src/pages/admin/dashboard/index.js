@@ -2,7 +2,6 @@ import { uploadTrailer } from 'api/movie';
 import InfoContainer from 'components/admin/dashboard-components/AppInfoBox';
 import LatestUploads from 'components/admin/dashboard-components/LatestUploads';
 import MostRatedMovies from 'components/admin/dashboard-components/MostRatedMovies';
-import MovieListItem from 'components/admin/dashboard-components/MovieListItem';
 import MoviesListTitle from 'components/admin/dashboard-components/MoviesListTitle';
 import AdminLayout from 'components/admin/layout/AdminLayout';
 import AddActorModal from 'components/admin/modals/AddActorModal';

@@ -14,7 +14,7 @@ const MoviesList = ({ header, moviesList }) => {
         {header}
       </h1>
       <GridContainer>
-        {moviesList.map((movie) => (
+        {moviesList?.map((movie) => (
           <MovieCard
             key={movie._id}
             movie={movie}

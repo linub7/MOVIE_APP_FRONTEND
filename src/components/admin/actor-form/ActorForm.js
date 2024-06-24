@@ -17,7 +17,7 @@ const ActorForm = ({
   loading,
   selectedPosterForUI,
 }) => {
-  const { name, about, gender, avatar } = actorInfo;
+  const { name, about, gender } = actorInfo;
 
   const handleOnChange = ({ target }) => {
     const { name, value } = target;

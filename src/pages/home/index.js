@@ -1,6 +1,5 @@
 import { fetchTopRatedMovies, getLatestUploadsByUser } from 'api/movie';
 import Slider from 'components/home/home-page-components/slider';
-import HeroSliderShow from 'components/home/home-page-components/HeroSliderShow';
 import MoviesList from 'components/shared/MoviesList';
 import NotVerified from 'components/home/NotVerified';
 import Container from 'components/shared/Container';

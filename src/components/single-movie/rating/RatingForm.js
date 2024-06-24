@@ -25,7 +25,7 @@ const RatingForm = ({
 
       <div className="p-5 space-y-3">
         <div className="relative text-highlight dark:text-highlight-dark flex items-center">
-          {ratings.map((_, index) => (
+          {ratings?.map((_, index) => (
             <AiOutlineStar
               onMouseEnter={() => handleMouseEnter(index)}
               className="cursor-pointer"
@@ -34,7 +34,7 @@ const RatingForm = ({
             />
           ))}
           <div className="flex absolute items-center top-1/2 -translate-y-1/2">
-            {selectedRatings.map((_, index) => (
+            {selectedRatings?.map((_, index) => (
               <AiFillStar
                 onMouseEnter={() => handleMouseEnter(index)}
                 className="cursor-pointer"

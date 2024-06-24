@@ -1,4 +1,3 @@
-import { IoHelpCircleOutline } from 'react-icons/io5';
 import { genresList } from 'utils/genres';
 
 const GenresModalContent = ({ handleAddGenres, genres, handleRemoveGenre }) => {

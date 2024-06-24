@@ -75,7 +75,7 @@ const AdminMovies = ({
       const { data, err } = await searchMovie(movieSearchTerm);
       if (err) return console.log(err);
       setSearchResults(data);
-      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+      data === false ? setResultsNotFound(true) : setResultsNotFound(false);
     }
   };
 

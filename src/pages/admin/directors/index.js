@@ -87,7 +87,7 @@ const AdminDirectors = ({
       const { data, err } = await searchDirector(directorSearchTerm);
       if (err) return console.log(err);
       setSearchResults(data);
-      data == false ? setResultsNotFound(true) : setResultsNotFound(false);
+      data === false ? setResultsNotFound(true) : setResultsNotFound(false);
     }
   };
 

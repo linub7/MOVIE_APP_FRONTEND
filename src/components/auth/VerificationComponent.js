@@ -41,7 +41,7 @@ const VerificationComponent = () => {
       setOtp(new Array(OTP_LENGTH).fill(''));
       setActiveOTPIndex(0);
     };
-  }, [user]);
+  }, [user, auth?.token]);
 
   const focusNextInputField = (index) => setActiveOTPIndex(index + 1);
   const focusPreviousInputField = (index) => {
@@ -73,7 +73,7 @@ const VerificationComponent = () => {
 
   const handleResentVerificationToken = async () => {
     const userId = auth ? auth?.user?._id : user._id;
-    const { err, data } = await resendVerificationToken(userId);
+    const { err } = await resendVerificationToken(userId);
 
     if (err?.error) {
       toast.error(err?.error);
@@ -129,7 +129,7 @@ const VerificationComponent = () => {
           </div>
 
           <div className="flex items-center justify-start space-x-4">
-            {otp.map((_, index) => (
+            {otp?.map((_, index) => (
               <input
                 type="number"
                 key={index}

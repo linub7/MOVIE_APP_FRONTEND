@@ -74,7 +74,7 @@ const AdminEditMovie = ({
     setGenres(movie?.genres);
     setVideoInfo(movie?.trailer);
     setWriters(
-      movie?.writers.map((writer) => ({
+      movie?.writers?.map((writer) => ({
         name: writer?.name,
         avatar: writer?.avatar?.url,
         id: writer?._id,
@@ -92,19 +92,14 @@ const AdminEditMovie = ({
         },
       }))
     );
-  }, []);
+  }, [movie]);
 
   const [castValidation, setCastValidation] = useState(false);
   const [loading, setLoading] = useState(false);
   const { auth } = useAuth();
 
-  const {
-    handleDirectorSearch,
-    searchingDirector,
-    searchDirectorResultsNotFound,
-    searchDirectorResults,
-    resetDirectorSearch,
-  } = useSearchDirector();
+  const { handleDirectorSearch, searchDirectorResults, resetDirectorSearch } =
+    useSearchDirector();
 
   const {
     handleWritersSearch,
@@ -250,7 +245,7 @@ const AdminEditMovie = ({
     formData.append('tags', JSON.stringify(tags));
     formData.append('genres', JSON.stringify(genres));
 
-    const finalCasts = casts.map((cast) => {
+    const finalCasts = casts?.map((cast) => {
       return {
         actor: cast.profile.id,
         roleAs: cast.roleAs,
@@ -260,7 +255,7 @@ const AdminEditMovie = ({
     formData.append('cast', JSON.stringify(finalCasts));
 
     if (writers.length) {
-      const finalWriters = writers.map((writer) => writer.id);
+      const finalWriters = writers?.map((writer) => writer.id);
       formData.append('writers', JSON.stringify(finalWriters));
     }
     if (director.id) formData.append('director', director.id);
@@ -275,7 +270,7 @@ const AdminEditMovie = ({
     if (ok) {
       progressBarRef.current.continuousStart();
 
-      const { data, err } = await updateMovieWithPoster(
+      const { err } = await updateMovieWithPoster(
         auth?.token,
         movie._id,
         formData

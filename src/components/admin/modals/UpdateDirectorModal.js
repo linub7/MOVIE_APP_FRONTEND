@@ -17,7 +17,7 @@ const UpdateDirectorModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [actorInfo, setActorInfo] = useState({ ...defaultDirectorInfo });
-  const { name, avatar } = actorInfo;
+  const { name } = actorInfo;
   const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
   useEffect(() => {

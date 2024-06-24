@@ -1,7 +1,4 @@
-import {
-  IoArrowBackCircleOutline,
-  IoCloseCircleOutline,
-} from 'react-icons/io5';
+import { IoCloseCircleOutline } from 'react-icons/io5';
 
 const CommonUpdateModal = ({ children, setShowWritersModal }) => {
   return (

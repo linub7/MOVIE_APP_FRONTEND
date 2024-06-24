@@ -17,7 +17,7 @@ const UpdateWriterModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [actorInfo, setActorInfo] = useState({ ...defaultWriterInfo });
-  const { name, avatar } = actorInfo;
+  const { name } = actorInfo;
   const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
   useEffect(() => {

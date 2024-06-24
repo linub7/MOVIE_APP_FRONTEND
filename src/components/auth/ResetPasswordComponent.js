@@ -88,7 +88,7 @@ const ResetPasswordComponent = () => {
       return toast.error('Passwords do not match');
     }
 
-    const { data, err } = await resetPassword({
+    const { err } = await resetPassword({
       password,
       id: queryId,
       token: queryToken,

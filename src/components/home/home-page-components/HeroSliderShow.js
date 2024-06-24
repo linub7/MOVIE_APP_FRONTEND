@@ -107,7 +107,7 @@ const HeroSliderShow = ({ slide, latestMovies, setSlide }) => {
         <h1 className="font-semibold text-2xl text-primary dark:text-white">
           Up Next
         </h1>
-        {upNext.map((movie) => (
+        {upNext?.map((movie) => (
           <img
             onClick={() => navigate(`/movies/${movie._id}`)}
             key={movie._id}
