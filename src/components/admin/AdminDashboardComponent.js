@@ -1,14 +1,14 @@
 import { IoHomeOutline, IoLogOutOutline } from 'react-icons/io5';
 import { BiMoviePlay } from 'react-icons/bi';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { FaPenNib, FaUserSecret, FaUserTie } from 'react-icons/fa';
-import { useAuth } from 'hooks';
 import Cookies from 'js-cookie';
+
+import { useAuth } from 'hooks';
 
 const AdminDashboardComponent = () => {
   const location = useLocation();
   const { setAuth } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     setAuth({
@@ -18,7 +18,7 @@ const AdminDashboardComponent = () => {
 
     Cookies.remove('auth');
 
-    navigate('/');
+    window.location.href = '/auth/signin';
   };
   return (
     <nav className="w-28 md:w-48 min-h-screen bg-secondary border-r border-gray-300">
