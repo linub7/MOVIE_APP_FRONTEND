@@ -18,7 +18,7 @@ const AdminDashboardComponent = () => {
 
     Cookies.remove('auth');
 
-    window.location.href = '/auth/signin';
+    window.location.href = '/';
   };
   return (
     <nav className="w-28 md:w-48 min-h-screen bg-secondary border-r border-gray-300">

@@ -18,7 +18,7 @@ const Navbar = () => {
       user: null,
       token: '',
     });
-    window.location.href = '/auth/signin';
+    window.location.href = '/';
   };
 
   const handleResetSearch = () => setSearchTerm('');
