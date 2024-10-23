@@ -86,8 +86,6 @@ const SingleMovie = () => {
       return toast.error(validateError);
     }
 
-    console.log({ rating: rate, content });
-
     const { err } = await addReview({
       parentMovie: movie._id,
       rating: rate,

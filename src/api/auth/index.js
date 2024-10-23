@@ -80,9 +80,6 @@ export const getMe = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    debugger;
-
-    console.log(data);
     return { data };
   } catch (error) {
     const { response } = error;

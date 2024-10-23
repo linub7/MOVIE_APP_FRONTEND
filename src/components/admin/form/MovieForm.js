@@ -191,8 +191,6 @@ const MovieForm = ({
       };
     });
     formData.append('cast', JSON.stringify(finalCasts));
-    console.log(casts);
-    console.log(finalCasts);
 
     if (writers.length) {
       const finalWriters = writers?.map((writer) => writer.id);

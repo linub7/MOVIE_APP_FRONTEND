@@ -31,12 +31,10 @@ const ResetPasswordComponent = () => {
 
   useEffect(() => {
     const handleValidateToken = async () => {
-      const { data, err } = await validateToken({
+      const { err } = await validateToken({
         token: queryToken,
         id: queryId,
       });
-      console.log(data);
-      console.log(err);
       if (err) {
         setIsVerifying(false);
         toast.error(err?.error);

@@ -60,7 +60,6 @@ const LiveSearch = ({
     }
 
     if (key === 'Enter') {
-      console.log(results[focusedIndex]);
       return handleSelection(results[focusedIndex]);
     }
 

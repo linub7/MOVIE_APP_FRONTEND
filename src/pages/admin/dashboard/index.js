@@ -58,8 +58,6 @@ const AdminDashboard = ({
     handleGetMostRatedMovies,
   } = useMovies();
 
-  console.log(mostRatedMovies);
-
   useEffect(() => {
     handleGetLatestUploads();
     handleGetMostRatedMovies();
@@ -77,7 +75,6 @@ const AdminDashboard = ({
     progressBarRef.current.continuousStart();
     const formData = new FormData();
     formData.append('video', file); // note: in backend, you have to use `video` in upload trailer route, we set `video` in multer settings for upload trailer -> got to backend/routes/movies.js => line 23
-    console.log(file);
 
     const { data, err } = await uploadTrailer(auth?.token, formData);
 
@@ -86,7 +83,6 @@ const AdminDashboard = ({
       progressBarRef.current.complete();
     } else {
       toast.success('Uploaded successfully');
-      console.log(data);
       setVideoInfo({
         url: data?.url,
         public_id: data?.public_id,

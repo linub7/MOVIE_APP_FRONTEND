@@ -28,7 +28,6 @@ const SearchMovie = () => {
       setLoading(false);
       return;
     }
-    console.log(data);
     setLoading(false);
     setResult(data);
   };

@@ -90,7 +90,6 @@ const VerificationComponent = () => {
       return toast.error('Invalid OTP Verification');
     } else {
       const OTP = otp.join('');
-      console.log(OTP);
 
       const { err, data } = await verifyUser({ OTP, userId: user._id });
       err?.error && toast.error(err?.error);
@@ -98,7 +97,6 @@ const VerificationComponent = () => {
       setLoading(false);
       if (data) {
         const { success, token, ...rest } = data;
-        console.log(rest);
 
         setAuth({
           user: { ...rest },

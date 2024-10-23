@@ -119,8 +119,6 @@ const AdminEditMovie = ({
     if (e.target.value !== ',') setTag(e.target.value);
   };
 
-  console.log('poster', poster);
-
   const handleAddTag = ({ key }) => {
     if (key === 'Enter' || key === ',') {
       if (!tag) return;

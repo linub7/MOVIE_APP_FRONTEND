@@ -113,14 +113,12 @@ const SingleMovieReviewsPage = () => {
       setDeleteLoading(false);
       return;
     }
-    console.log({ data });
+
     toast.success(data?.message);
     setReviews(data?.reviews);
     setShowEditModal(false);
     setDeleteLoading(false);
   };
-
-  console.log({ reviews });
 
   return (
     <div className="dark:bg-primary bg-white min-h-screen pb-10">
